@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%1ar)i&68#4bb$j24axv0l+dwbe0rpdu#b)#b--3h^v-w*yyir
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mentoriasdeisi.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
+ALLOWED_HOSTS = ['cmentor.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
 
 CSRF_TRUSTED_ORIGINS = ['http://mentorias.local', 'https://mentorias.local']
 
@@ -143,8 +143,9 @@ RUN_ENV = os.getenv("RUN_ENV", "PA")   # "PA" (default) ou "CLUSTER"
 DEBUG = os.getenv("DEBUG", "1" if RUN_ENV=="PA" else "0") == "1"
 
 
+RUN_ENV = os.getenv("RUN_ENV", "LOCAL")   # LOCAL | PA | CLUSTER
+
 if RUN_ENV == "PA":
-    # === Ambiente da universidade (inalterado) ===
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -158,8 +159,8 @@ if RUN_ENV == "PA":
     }
     MEDIA_ROOT = '/home/mentoriasDEISI/projeto/media'
     STATIC_ROOT = '/home/mentoriasDEISI/projeto/static'
-else:
-    # === Cluster (usa env vars; não mexe no PA) ===
+
+elif RUN_ENV == "CLUSTER":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -171,9 +172,19 @@ else:
             'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
         }
     }
-    # caminhos dentro do container
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+else:
+    # === LOCAL (SQLite) ===
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    MEDIA_ROOT = BASE_DIR / 'media'
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'

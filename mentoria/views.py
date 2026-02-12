@@ -19,7 +19,7 @@ import calendar
 import locale
 matplotlib.use('Agg')
 
-ano = AnoLectivo.objects.get(ano='25-26')
+
 semestre = 2
 
 
@@ -27,6 +27,7 @@ semestre = 2
 # Create your views here.
 @login_required
 def __mentores_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     print("\n\n\ngrupos do utilizador:", request.user.groups.all())
 
     if request.user.groups.filter(name="Gestores").exists():
@@ -80,6 +81,7 @@ from django.db.models import Prefetch
 # view otimizada
 @login_required
 def mentores_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     print("\n\n\ngrupos do utilizador:", request.user.groups.all())
 
     # Obter aluno atual (caso não seja gestor)
@@ -164,6 +166,7 @@ def mentores_view(request):
 
 #@login_required
 def emails_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     emails_mentores = set()
     for m in Mentor.objects.filter(ano_lectivo=ano, disciplina__semestre=semestre).select_related('aluno__user'):
         emails_mentores.add(f"{m.aluno} <{m.aluno.user.email}>")
@@ -182,6 +185,7 @@ def emails_view(request):
 # Create your views here.
 @login_required
 def cria_diade_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
 
     if request.method == 'POST':
         mentorando = Mentorando.objects.get(id=request.POST['mentorando_id'])
@@ -272,6 +276,7 @@ from django.db.models import Prefetch
 
 @login_required
 def mentorandos_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.user.groups.filter(name="Gestores").exists():
         alunos_mentorando = set(
             m.aluno for m in Mentorando.objects.filter(
@@ -377,13 +382,14 @@ def mentorandos_view(request):
 # Create your views here.
 @login_required
 def diades_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     context = {'diades': Diade.objects.all(), 'ano': ano, 'semestre':semestre}
     return render(request, 'mentoria/diades.html', context)
 
 
 @login_required
 def cria_mentor_view(request):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.method == 'POST':
         aluno = Aluno.objects.get(id=request.POST['mentor_aluno_id'])
         disciplina = Disciplina.objects.get(id=request.POST['disciplina_id'])
@@ -396,7 +402,7 @@ def cria_mentor_view(request):
 
 @login_required
 def cria_mentorando_view(request):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.method == 'POST':
         aluno = Aluno.objects.get(id=request.POST['mentorando_aluno_id'])
         disciplina = Disciplina.objects.get(id=request.POST['disciplina_id'])
@@ -423,7 +429,7 @@ def cria_mentorando_view(request):
 
 @login_required
 def remover_mentorando_view(request, mentorando_id):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     mentorando = Mentorando.objects.get(id=mentorando_id)
     diade = Diade.objects.filter(mentorando=mentorando)
 
@@ -448,7 +454,8 @@ def remover_mentorando_view(request, mentorando_id):
 
 @login_required
 def sessoes_view(request,mentor_id,mentorando_id,sep):
-    ano = AnoLectivo.objects.get(id=1)
+    ano = AnoLectivo.objects.get(ano='25-26')
+
 
     if request.user.groups.filter(name="Gestores").exists():
         context = {'sessoes': Sessao.objects.all()}
@@ -476,7 +483,7 @@ def sessoes_view(request,mentor_id,mentorando_id,sep):
 
 @login_required
 def criar_sessao_view(request, diade_id):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     diade = Diade.objects.get(id=diade_id)
 
     if request.method == 'POST':
@@ -493,7 +500,7 @@ def criar_sessao_view(request, diade_id):
 
 @login_required
 def edita_sessao_view(request, sessao_id):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     sessao = get_object_or_404(Sessao, id=sessao_id)
     diade = Sessao.objects.get(id=sessao_id).diade
 
@@ -513,24 +520,28 @@ def edita_sessao_view(request, sessao_id):
 
 @login_required
 def apaga_sessao_view(request, sessao_id):
+    ano = AnoLectivo.objects.get(ano='25-26')
     diade = Sessao.objects.get(id=sessao_id).diade
     Sessao.objects.get(id=sessao_id).delete()
     return redirect('sessoes', diade.mentor_id, diade.mentorando_id, 0)
 
 @login_required
 def perfil_view(request, aluno_id):
+    ano = AnoLectivo.objects.get(ano='25-26')
     aluno = Aluno.objects.get(id=aluno_id)
 
     return render(request, 'mentoria/perfil.html', {'aluno': aluno, 'ano': ano, 'semestre':semestre})
 
 @login_required
 def vermais_view(request, sessao_id):
+    ano = AnoLectivo.objects.get(ano='25-26')
     sessao = Sessao.objects.get(id=sessao_id)
 
     return render(request, 'mentoria/ver_mais.html', {'sessao': sessao, 'ano': ano, 'semestre':semestre})
 
 @login_required
 def ___all_sessoes_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.user.groups.filter(name="Gestores").exists():
         sessoes = list(Sessao.objects.filter(diade__ano_lectivo=ano))
 
@@ -567,6 +578,8 @@ from django.db.models import Prefetch
 ## codigo otimizado
 @login_required
 def all_sessoes_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
+
     # Obter sessões com joins otimizados
     if request.user.groups.filter(name="Gestores").exists():
         sessoes_qs = Sessao.objects.filter(
@@ -620,6 +633,8 @@ def all_sessoes_view(request):
 
 @login_required
 def av_mentorando_view(request, sessao_id):
+    ano = AnoLectivo.objects.get(ano='25-26')
+
     sessao = get_object_or_404(Sessao, id=sessao_id)
     diade = Sessao.objects.get(id=sessao_id).diade
 
@@ -638,6 +653,7 @@ def av_mentorando_view(request, sessao_id):
 
 @login_required
 def report_sessao_view(request, sessao_id):
+    ano = AnoLectivo.objects.get(ano='25-26')
     sessao = get_object_or_404(Sessao, id=sessao_id)
     diade = Sessao.objects.get(id=sessao_id).diade
     sessao.reportado = True
@@ -646,6 +662,7 @@ def report_sessao_view(request, sessao_id):
 
 @login_required
 def report_sessaoR_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     sessoes = list(Sessao.objects.filter(reportado = False))
     sessoes.sort(key=lambda x: x.data,reverse=True)
     return render(request, 'mentoria/all_sessoes.html', {'sessoes': sessoes , 'filtro': 'r', 'ano': ano, 'semestre':semestre})
@@ -654,6 +671,7 @@ def report_sessaoR_view(request):
 
 @login_required
 def sessoes_por_reportar_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.user.groups.filter(name="Gestores").exists():
         sessoes = list(Sessao.objects.filter(diade__ano_lectivo=ano, diade__mentor__disciplina__semestre=semestre, reportado = False))
 
@@ -687,7 +705,7 @@ def sessoes_por_reportar_view(request):
 
 @login_required
 def reportar_sessoes_mentor_view(request, aluno_id):
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     if request.user.groups.filter(name="Gestores").exists():
         alunoAtual = Aluno.objects.get(id = aluno_id)
         sessoes = list(sessao for sessao in Sessao.objects.filter(diade__mentor__aluno=alunoAtual, diade__ano_lectivo=ano, diade__mentor__disciplina__semestre=semestre, reportado = False))
@@ -709,10 +727,12 @@ def reportar_sessoes_mentor_view(request, aluno_id):
 
 
 def info_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     return render(request, 'mentoria/info.html')
 
 
 def dashboard_view(request):
+    ano = AnoLectivo.objects.get(ano='25-26')
     sessoes = Sessao.objects.filter(diade__ano_lectivo=ano, diade__mentor__disciplina__semestre=semestre)
     mentores = Mentor.objects.filter(ano_lectivo=ano, disciplina__semestre=semestre)
     diades = Diade.objects.filter(ano_lectivo=ano, mentor__disciplina__semestre=semestre)
@@ -771,7 +791,7 @@ def dashboard_view(request):
 
 def old_cria_grafico():
 
-
+    ano = AnoLectivo.objects.get(ano='25-26')
     locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
     ano_atual = datetime.now().year
 
@@ -818,6 +838,7 @@ import base64
 import urllib
 
 def cria_grafico():
+    ano = AnoLectivo.objects.get(ano='25-26')
     # Definir o locale para português
     locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
 
