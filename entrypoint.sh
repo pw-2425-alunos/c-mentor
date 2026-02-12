@@ -10,7 +10,7 @@ python manage.py collectstatic --noinput || true
 echo "Starting Gunicorn..."
 exec gunicorn projeto.wsgi:application \
     --bind 0.0.0.0:3000 \
-    --workers 3 \
-    --threads 2 \
+    --workers 2 \
+    --timeout 60 \
     --access-logfile - \
     --error-logfile -
