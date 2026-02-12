@@ -19,4 +19,4 @@ ENV RUN_ENV=CLUSTER
 
 EXPOSE 3000
 
-CMD sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn projeto.wsgi:application --bind 0.0.0.0:3000 --access-logfile - --error-logfile -"
+CMD sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && sleep 10 && gunicorn projeto.wsgi:application --bind 0.0.0.0:3000 --access-logfile - --error-logfile -"
