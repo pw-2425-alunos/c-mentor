@@ -1,0 +1,105 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: white;
+    }
+
+h2,h1 {
+    color: white;
+    }
+
+
+ .disciplina input {
+    display:inline-block;
+    color: gray;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background: green;
+    text-decoration: none;
+    width: 100%;
+}
+
+a.sessão {
+    display:inline-block;
+    color: black;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    background: white;
+    border: 1px solid black;
+    text-decoration: none;
+}
+
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+body {
+
+margin: 0;
+
+width: 100%;
+height: 100%;
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+{% endblock style %}
+
+
+
+
+
+{% block main %}
+
+<body style="background-color: #b5073d;">
+
+<h1>Perfil de {{ aluno.user.first_name }} </h1>
+
+
+    <div class="disciplina"
+        style="background-color: whitesmoke;
+            ; border: 1px solid black;
+            "
+    >
+        <ul>
+            <p><b>Nome:</b> {{ aluno }}</p>
+            <p><b>Número:</b> {{ aluno.numero }}</p>
+            <p><b>Curso:</b> {{ aluno.curso }}</p>
+            {% if aluno.ano %} <p><b>Ano:</b> {{ aluno.ano }}</p> {% endif %}
+            <p><b>Email: </b><a href="mailto:{{ aluno.user.email }}">{{ aluno.user.email }}</a></p>
+        </ul>
+    </div>
+
+
+
+</body>
+
+
+
+{% endblock main %}

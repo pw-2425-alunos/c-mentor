@@ -1,0 +1,118 @@
+{% extends "app/base.html" %}
+
+
+
+{% block style %}
+table {
+color:grey;
+    border-collapse:collapse;
+/*    border-top: 1px solid black; */
+    border-radius: 10px;
+}
+
+th {
+    text-align:right;
+/*    border-right: 1px solid black; */
+}
+
+th, td {
+    padding: 1.2ch 0.75ch ;
+}
+
+table.form {
+    width:100%;
+}
+
+.form th {
+    width: 8ch;
+}
+.form td {
+    padding: 1.2ch 0ch 1.2ch 1.5ch;
+}
+
+#novo-utente {
+    display: none;
+}
+
+input {
+    padding: 1.2ch 0.75ch;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 97%;
+}
+
+select,textarea,option {
+    padding: 1.2ch 0.75ch;
+    border-radius: 10px;
+    width: 100%;
+}
+
+textarea{
+    width:98%;
+}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script>
+    function mostraForm() {
+
+        const novo = document.querySelector('#novo-utente');
+
+        if ( novo.style.display != 'block' ) {
+            novo.style.display='block';
+            document.querySelector('#botao-nova').style.background="#bf1d19";
+            document.querySelector('#botao-nova').style.color="white";
+        }
+        else {
+            novo.style.display='none';
+            document.querySelector('#botao-nova').style.background="inherit";
+            document.querySelector('#botao-nova').style.color="#bf1d19";
+        }
+    }
+</script>
+{% endblock %}
+
+
+
+{% block main %}
+
+<h3>Utentes da Delegação da CVP de {{ request.user.colaborador.delegacao }}</h3>
+
+{% for utente in utentes %}
+
+<a class="botao-listado" href='{% url 'horarios:utente' utente.id %}'>
+    <i class='far fa-address-card'></i>
+    {{ utente }}
+</a>
+
+{% endfor %}
+
+
+<a  class='botao largo pointer' id="botao-nova" onclick=mostraForm()>
+<i class='fas fa-user-plus'></i>
+Novo utente
+</a>
+<div id="novo-utente"  style="padding:2ch; border-radius:0 0 10px 10px; background:whitesmoke; ">
+
+
+<form action="" method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="form">
+    {{ form }}
+    </table>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1ch;">
+        <a class="botao-listado" href="{% url 'horarios:utentes' %}" style="margin-top:3.3ch; text-align:center; padding">
+            <!-- <i class='fas fa-undo'></i> -->
+            &hookleftarrow;
+            Cancelar
+        </a>
+        <input class="botao pointer" type="submit" value="&check; Registar" class="btn btn-success" >
+    </div>
+</form>
+
+</diV>
+{% endblock main %}

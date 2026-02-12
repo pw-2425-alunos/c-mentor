@@ -1,0 +1,127 @@
+{% extends "app/base.html" %}
+
+
+{% block style %}
+
+table.form {
+color:grey;
+border-collapse:collapse;
+border-radius: 10px;
+}
+
+table.form th, table.info th {
+text-align:right;
+}
+
+table.form th, table.form td,
+table.info th, table.info td
+{
+padding: 0.75ch 0 0.75ch 0.75ch ;
+}
+
+table.form {
+width:100%;
+}
+
+table.form th {
+width: 8ch;
+}
+
+input[type="text"], select, textarea, option {
+padding: 0.5ch 1ch;
+border-radius: 10px;
+border: 1px solid black;
+width: 100%;
+}
+
+input[type="text"] {
+border: 1px solid black;
+width: 97.5%;
+}
+
+textarea{
+width:97.5%;
+}
+
+.botoes {
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:1ch;
+}
+
+table.form tr:last-child,
+table.form tr:last-child td:last-child,
+table.form tr:nth-last-child(2),
+table.form tr:nth-last-child(2) td:last-child {
+padding:0;
+font-size:0;
+}
+
+{% endblock %}
+
+
+{% block main %}
+
+
+<h1>{{ utente }}</h1>
+
+
+<h3>Editar ocorrência</h3>
+
+
+
+
+<form action="{% url 'horarios:edita_ocorrencia' utente.id ocorrencia.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>
+        <select name="tipo" id="id_tipo">
+            <option value="1" {% if form.initial.tipo == 1 %} selected {% endif %}>
+                Consulta
+            </option>
+            <option value="2" {% if form.initial.tipo == 2 %} selected {% endif %}>
+                Apoio de enfermagem
+            </option>
+        </select>
+    </p>
+
+    <p>
+        <input type="text" name="titulo" placeholder="Descrição curta em 3-4 palavras..." maxlength="200" id="id_titulo"
+            value="{{ form.initial.titulo }}">
+    </p>
+
+    <p>
+        <textarea name="descricao" cols="40" rows="4" placeholder="Descrição detalhada da ocorrência..."
+            style="font-family:Roboto,sans-serif;" id="id_descricao">{{ form.initial.descricao }}
+    </textarea>
+    </p>
+
+    <p>
+        <input type="file" name="imagem" style="display:none;" accept="image/*" id="id_imagem">
+    </p>
+
+    <p>
+        <input type="file" name="doc" style="display:none;" id="id_doc">
+    </p>
+
+
+
+    <div class="botoes">
+        <label for="id_imagem" class="botao-listado">Carregar Imagem</label>
+        <label for="id_doc" class="botao-listado">Carregar Documento</label>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1ch;">
+
+        <a class="botao-listado" style="padding: 2.5px 10px; margin-top:3.3ch; text-align:center;" href="{% url 'horarios:utente' utente.id %}"
+            role="button" class="btn btn-warning">Cancelar</a>
+
+        <a class="botao-listado" style="padding: 2.5px 10px; margin-top:3.3ch; text-align:center; color:#bf1d19; border: 1px solid red;" href="{% url 'horarios:apagar_ocorrencia' utente.id ocorrencia.id %}"
+            role="button" class="btn btn-warning">Apagar</a>
+
+        <input class="botao" type="submit" value="Gravar" class="btn btn-success" style="color:white; background:red;">
+    </div>
+
+</form>
+
+{% endblock main %}

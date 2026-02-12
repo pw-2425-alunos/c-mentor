@@ -1,0 +1,56 @@
+{% extends "app/base.html" %}
+
+
+{% block style %}
+
+li {
+    padding: 1ch 0;
+}
+
+{% endblock %}
+
+
+{% block main %}
+
+
+<h1>{{ utente }}</h1>
+
+<h3>Ocorrência:</h3>
+<ul>
+
+    <li><b>Data:</b> {{ ocorrencia.data|date:'d.m.y' }}</li>
+    <li><b>Tipo:</b> {{ ocorrencia.tipo }}</li>
+    <li><b>Colaborador CVP que realizou:</b> {{ ocorrencia.colaborador }}</li>
+    <li><b>Título:</b> {{ ocorrencia.titulo }}</li>
+    <li><b>Descrição:</b> {{ ocorrencia.descricao|linebreaks }}</li>
+
+    {% if ocorrencia.imagem.name %}
+
+    <li>  <b>Imagem:</b><br><br>
+    <img src="{{ ocorrencia.imagem.url }}" width="100%">
+    </li>
+    {% endif %}
+
+    {% if ocorrencia.doc.name %}
+        <li><b>Documento: </b>
+
+            <a href="{{ ocorrencia.doc.url }}">{{ ocorrencia.doc.name }}</a>
+
+        </li>
+    {% endif %}
+
+</ul>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1ch;">
+
+<a class='botao-listado' style="margin-top:4ch;text-align:center;" href='{% url 'horarios:utente' utente.id %}'>
+< Voltar
+</a>
+
+<a class='botao'  style="text-align:center;" href='{% url 'horarios:edita_ocorrencia' utente.id ocorrencia.id %}'>
+Editar ocorrência
+</a>
+
+    </div>
+
+
+{% endblock main %}

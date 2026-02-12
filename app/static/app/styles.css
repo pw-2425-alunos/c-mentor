@@ -1,0 +1,108 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    background-color: black;
+    color: white;
+    padding: 2.5px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+header h3 {margin:10px 0 10px 0px;}
+
+header a {
+    text-decoration: none;
+    color:white;
+}
+
+header nav a {
+    text-decoration: none;
+    padding: 2px;
+    margin-right:10px;
+    color:white;
+}
+
+header nav a:hover {
+    opacity: 0.7;
+}
+
+main {
+    padding: 50px 20px;
+    max-width: 500px;
+    margin:auto;
+}
+.helptext {
+    display:block;
+    font-style: italic;
+    font-size: 0.7rem;
+}
+
+.botao {
+    display:inline-block;
+    padding:5px 20px;
+    margin-top: 4ch;
+    border-radius: 10px;
+    color: #b5073d;
+    border: 1px solid #b5073d;
+    background: white;
+    text-decoration:none;
+}
+
+
+.largo {
+    display:block;
+}
+
+.botao:hover{
+    color: white;
+    background: #b5073d;
+}
+
+
+.botao-listado {
+    display:block;
+    padding:5px 20px;
+    margin-top: 1ch;
+    border-radius: 10px;
+    color: #b5073d;
+    border: 1px solid #b5073d;
+    background: white;
+    text-decoration:none;
+}
+
+.botao-listado:hover{
+    color: #b5073d;
+    background: grey;
+}
+
+.botao-cinza {
+    display:block;
+    padding:5px 20px;
+    margin-top: 1ch;
+    border-radius: 10px;
+    color: white;
+    border: 1px solid grey;
+    background: grey;
+    text-decoration:none;
+    padding:0.5ch 1ch;
+    border-radius:1ch;
+    border: 1px solid black;
+    font-size:0.85rem;
+}
+
+.botao-cinza:hover{
+    background: black;
+}
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+

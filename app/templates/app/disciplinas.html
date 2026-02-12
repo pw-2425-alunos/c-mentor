@@ -1,0 +1,99 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding:10px;
+    margin: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+ .disciplina a,
+ .disciplina input {
+    display:inline-block;
+    color: gray;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    border-radius: 5px;
+    color: blue;
+    border: 1px solid blue;
+    background: white;
+    text-decoration: none;
+}
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+{% endblock style %}
+
+
+
+
+{% block main %}
+
+
+<h3>Lista das disciplinas de {{ aluno.curso }} </h3>
+<p>Lista das disciplinas de {{ aluno.curso }} onde se pode inscrever e escolher ou mudar a turma. As turmas têm lotação máxima, não permitindo inscrever-se se estiver cheia.</p>
+
+
+{% for disciplina in disciplinas %}
+    <div class="disciplina"
+        style="background-color:
+            {% if disciplina.ano == 1 %} whitesmoke;
+            {% elif disciplina.ano == 2 %} lightgrey;
+            {% else %} whitesmoke;
+            {% endif %};
+            ; border: 1px solid black;
+            "
+    >
+        <form action="{% url 'horarios:disciplinas' %}" method="POST">
+        {% csrf_token %}
+
+        <table style="border-collapse: collapse;">
+            <tr>
+                <td style="padding-right:10px;">
+                    {% if aluno in disciplina.alunos.all %} <b>{{ disciplina }}</b> {% else %} {{ disciplina }} {% endif %}
+                    <input type="hidden" name="disciplina" value="{{ disciplina.id }}">
+                    <input type="hidden" name="accao" {% if aluno not in disciplina.alunos.all %} value="inscrever" {% else %} value="desinscrever" {% endif %}>
+                </td>
+                <td class="turma" style="padding-left:15px; border-left: 1px solid black">
+                    {% for turma in disciplina.turmas.all %}
+                        {% if aluno in turma.alunos.all %}
+                            <span>Está inscrito na turma <b>{{ turma }}</b></span>
+                        {% endif %}
+                    {% endfor %}
+                    <span>Não tem turma</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding-right:10px;">
+                    <input type="submit" {% if aluno not in disciplina.alunos.all %} value="&check; Inscrever" {% else %} value="Desinscrever" {% endif %}
+                    >
+                </td>
+                <td style="padding-left:15px; border-left: 1px solid black">
+                    {% if aluno in disciplina.alunos.all %}
+                        <a href="{% url 'horarios:disciplina' disciplina.id %}">
+                            <svg xmlns="http:w.w3.org/2000/svg" viewBox="0 0 640 512" width="12px"><!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+                            Inscrever / Alterar turma
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+{% endfor %}
+
+</ul>
+
+{% endblock main %}

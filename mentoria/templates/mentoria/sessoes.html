@@ -1,0 +1,151 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+}
+h3 {
+    margin-bottom: 10px;
+    color: white;
+    text-align: center;
+    }
+
+h1,h2 {
+    color: white;
+    }
+
+
+.disciplina input {
+    display:inline-block;
+    color: gray;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background: green;
+    text-decoration: none;
+    width: 100%;
+}
+
+.sumario{
+    overflow-x: auto;
+}
+
+a.sessão {
+    display:inline-block;
+    color: black;
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    margin: 5px 0;
+    background: white;
+    text-decoration: none;
+    transition: filter 0.3s ease;
+}
+
+a.sessão:hover{
+    filter: brightness(80%);
+}
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+body {
+    margin: 0;
+
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+
+
+{% endblock style %}
+
+
+
+
+
+{% block main %}
+
+<body style="background-color: #b5073d;">
+
+<h1 style="text-align: center;">
+Sessões de {{ disciplina }}
+</h1>
+
+<h3>Mentor: {{ mentor.aluno }} | Mentorando: {{ mentorando.aluno }}</h3>
+
+
+
+
+
+{% if sep == 0 %}
+
+<a class="sessão" href="{% url 'criar_sessao' diade.id %}" style="display: block; width:100%; text-align:center; background:#28a745; color:white;">Criar uma nova sessão</a>
+
+{% endif %}
+
+{% for sessao in sessoes %}
+    <div class="disciplina"
+        style="background-color: whitesmoke;
+            ; border: 1px solid black;
+            "
+    >
+        <h3 style="color:black;">Sessão de {{ sessao.data|date:"d.m.y, H:i" }}</h3>
+
+
+            <b>Sumario</b>
+            <br>
+            <div class="sumario">{{ sessao.sumario }}</div>
+            {% if sessao.confirmado == False %}
+            <div style="color: red; margin:20px 20px 0; font-size:small;"><b>Importante:</b> O mentorando deverá confirmar na plataforma que a sessão foi realizada.</div>
+            {% endif %}
+            <br>
+
+            <a class="sessão" href="{% url 'vermais' sessao.id %}" style="float: right; margin-right: 10px; border: 1px solid grey;">
+                Detalhes
+            </a>
+        {% if sep == 0 %}
+
+        <a class="sessão" href="{% url 'edita' sessao.id %}" style="float: right; margin-right: 10px; background:#ffc107; ">
+            Editar
+        </a>
+        {% else %}
+            {% if sessao.confirmado == False %}
+            <a class="sessão" href="{% url 'av_mentorando' sessao.id %}" style="float: right; margin-right: 10px;">
+                Confirmar Sessão
+            </a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endfor %}
+
+<a href="{% url 'mentores' %}" class="sessão">⏎ Voltar</a>
+
+</body>
+
+
+
+{% endblock main %}

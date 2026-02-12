@@ -1,0 +1,163 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+h3 {
+    margin-bottom: 10px;
+    color: white;
+    }
+
+h2,h1 {
+    color: white;
+    }
+
+
+ .disciplina input {
+    display:inline-block;
+    color: gray;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background: green;
+    text-decoration: none;
+    width: 100%;
+}
+
+
+
+a.sessão, .disciplina input {
+    display:inline-block;
+    color: black;
+    margin: 5px 0;
+    background: white;
+    border: 1px solid black;
+
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    margin: 5px 0;
+    background: white;
+    text-decoration: none;
+    transition: filter 0.3s ease;
+}
+
+a.sessão:hover, .disciplina input:hover{
+    filter: brightness(80%);
+}
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+
+.azul {
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+
+    margin: 5px 0;
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color  0.3s ease;
+}
+.azul:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+body {
+
+margin: 0;
+
+width: 100%;
+height: 100%;
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+{% endblock style %}
+
+
+{% block main %}
+
+<body style="background-color: #b5073d;">
+
+    <h1 style="text-align: center;">
+        Sessão de {{ sessao.diade.mentor.disciplina }}
+        </h1>
+
+
+    <div class="disciplina"
+        style="background-color: whitesmoke;
+            ; border: 1px solid black;
+            padding: 20px;
+            "
+    >
+            <b>Data e hora:</b> {{ sessao.data }}
+            <br>
+            <br>
+            <b>Mentor:</b>
+                <a class="azul" style="text-decoration: none;" href="{% url 'perfil' sessao.diade.mentor.aluno.id %}" target="_blank">{{ sessao.diade.mentor.aluno }}</a>
+            <br>
+            <br>
+            <b>Mentorando: </b>
+                <a class="azul" style="text-decoration: none;" href="{% url 'perfil' sessao.diade.mentorando.aluno.id %}" target="_blank">{{ sessao.diade.mentorando.aluno }}</a>
+            <br>
+            <br>
+            <b>Sumário: </b> {{ sessao.sumario }}
+            <br>
+            <br>
+            <b>Objetivos da sessão:</b> {{ sessao.objetivo }}
+            <br>
+            <br>
+            <b>Recursos Utilizados:</b> {{ sessao.recursos }}
+            <br>
+            <br>
+            <b>Avaliação do trabalho realizado:</b> <b>Mentor:</b> {{ sessao.avaliacao_mentor }} <b> / Mentorando:</b> {{ sessao.avaliacao_mentorando }}
+            <br>
+            <br>
+            <b>Observações/Dificuldades encontradas:</b> {{ sessao.observacoes }}
+            <br>
+            <br>
+            <b>Planificação da sessão seguinte:</b> {{ sessao.planificacao_proxima_sessao }}
+            <br>
+            <br>
+            {% if sessao.confirmado == False %}
+            <span style="color: red;"><b>Nota:</b> Sessão por confirmar por parte do mentorando </span>
+            {% else %}
+            <b style="color: green;"> Sessão confirmada ✅</b>
+            {% endif %}
+    </div>
+
+    <a href="{% url 'mentores' %}" class="sessão" style="background:#28a745; color:white;">⏎ Voltar</a>
+
+</body>
+
+
+
+{% endblock main %}

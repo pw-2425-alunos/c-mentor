@@ -1,0 +1,203 @@
+{% extends "app/base.html" %}
+
+
+{% block style %}
+table.form {
+color:grey;
+    border-collapse:collapse;
+    border-radius: 10px;
+}
+
+table.form th, table.info th {
+    text-align:right;
+}
+
+table.form th, table.form td,
+table.info th, table.info td
+{
+    padding: 0.75ch 0 0.75ch 0.75ch ;
+}
+
+table.form {
+    width:100%;
+}
+
+table.form th {
+    width: 8ch;
+}
+
+#nova-ocorrencia, #minus {
+    display: none;
+}
+
+input[type="text"], select, textarea, option {
+    padding: 0.5ch 1ch;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 100%;
+}
+
+input[type="text"] {
+    border: 1px solid black;
+    width: 97.5%;
+}
+
+textarea{
+    width:97.5%;
+}
+
+.botoes {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1ch;
+}
+
+table.form tr:last-child,
+table.form tr:last-child td:last-child,
+table.form tr:nth-last-child(2),
+table.form tr:nth-last-child(2) td:last-child {
+    padding:0;
+    font-size:0;
+}
+
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    function mostraForm() {
+
+        const nova = document.querySelector('#nova-ocorrencia')
+
+        if( nova.style.display != 'block') {
+            nova.style.display='block';
+            document.querySelector('#minus').style.display="inline-block";
+            document.querySelector('#plus').style.display="none";
+
+            document.querySelector('#botao-nova').style.background="#bf1d19";
+            document.querySelector('#botao-nova').style.color="white";
+        } else {
+            nova.style.display='none';
+            document.querySelector('#minus').style.display="none";
+            document.querySelector('#plus').style.display="inline-block";
+        }
+    }
+</script>
+{% endblock %}
+
+
+{% block main %}
+
+
+<h1>
+    {{ utente }}
+    <a class="botao-listado" style="display:inline-block; padding: 2.5px; font-size:0.75rem;" href="{% url 'horarios:edita_utente' utente.id %}" role="button" class="btn btn-warning">
+    <i class='fas fa-user-edit'></i>
+    </a>
+</h1>
+
+<table class="info">
+    <tr>
+        <th>Delegação</th>
+        <td>{{utente.delegacao}}</td>
+    </tr>
+    <tr>
+        <th>Morada</th>
+        <td>{{utente.morada}}</td>
+    </tr>
+    <tr>
+        <th>Telefone</th>
+        <td>{{utente.telefone}}</td>
+    </tr>
+    <tr>
+        <th>SNS</th>
+        <td>{{utente.sns}}</td>
+    </tr>
+</table>
+
+<!--
+<a class="botao-listado" style="display:inline-block; padding: 2.5px 10px" href="{% url 'horarios:edita_utente' utente.id %}" role="button" class="btn btn-warning">
+    <i class='fas fa-user-edit'></i>
+    Editar informação
+</a>
+-->
+
+
+<br>
+
+<h3>Histórico de consultas e apoios de enfermagem:</h3>
+
+{% for ocorrencia in utente.ocorrencias.all %}
+<a class="botao-listado" href="{% url 'horarios:ocorrencia' utente.id ocorrencia.id %}">
+    <table>
+        <tr>
+            <td><span>{{ ocorrencia.data|date:"d.m.y" }}:</span></td>
+            <td><b>{{ ocorrencia.tipo }}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{{ ocorrencia.titulo }}</td>
+        </tr>
+    </table>
+
+</a>
+{% empty %}
+
+<p>Sem ocorrências registadas.</p>
+{% endfor %}
+
+    <a class='botao largo pointer' id="botao-nova" style="text-align:center;" onclick=mostraForm()>
+        <i id="plus" class='fas fa-plus'></i>
+        <i id="minus" class='fas fa-minus'></i>
+        Registo de nova ocorrência
+    </a>
+
+
+<div id="nova-ocorrencia"  style="padding:2ch; border-radius:0 0 10px 10px; background:whitesmoke; ">
+
+<form action="" method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+
+    <div class="botoes">
+
+      <label for="id_imagem" class="botao-listado pointer" >
+          <i class='fas fa-paperclip'></i>
+          Carregar Imagem
+          <i class='fas fa-file-image'></i>
+      </label>
+
+      <label for="id_doc" class="botao-listado  pointer" >
+          <i class='fas fa-paperclip'></i>
+          Carregar Documento
+          <i class='fas fa-file-alt'></i>
+        </label>
+    </div>
+
+    <div style="text-align:right">
+
+        <a class="botao-listado" style="display:inline-block; padding: 2.5px 10px" href="{% url 'horarios:utente' utente.id %}" role="button" class="btn btn-warning">
+
+            &hookleftarrow; Cancelar
+        </a>
+
+        <input class="botao pointer" type="submit" value="&check; Registar" class="btn btn-success" style="color:white; background:#bf1d19;">
+    </div>
+
+</form>
+
+</div>
+
+
+<a class='botao-listado'  style="margin-top:4ch; text-align:center;" href='{% url 'horarios:utentes'  %}'>
+    <i class="fa fa-group"></i> Lista de Utentes
+</a>
+
+<script>
+    document.getElementById("id_imagem").value = "New Button Name";
+</script>
+
+{% endblock main %}

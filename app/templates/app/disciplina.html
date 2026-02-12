@@ -1,0 +1,128 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+    main {
+        display: flex;
+        flex-direction:column;
+        align-items: center;
+        justify-contents: center;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    form {
+        display: flex;
+        flex-direction:column;
+        align-items: flex-start;
+        justify-contents: center;
+    }
+
+    button {
+        padding:5px 5px;
+        margin: 0 5px;
+        border-radius: 20px;
+    }
+
+    input[type='submit'] {
+        color: white;
+        background: blue;
+        width: 100%;
+    }
+
+    a {
+        color: gray;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+
+    .voltar {
+        width:100%;
+        padding:5px 0;
+        text-align:center;
+        color:grey;
+        border-color: black;
+    }
+
+    .voltar:hover {
+        background-color: lightgrey;
+        color: black;
+    }
+
+    .sem-vaga {
+        margin-left: 25px;
+        margin-bottom: 10px;
+
+    }
+
+{% endblock style %}
+
+
+
+{% block main %}
+
+    <h3>Turmas de {{ disciplina }}:</h3>
+
+    <form action="{% url 'horarios:disciplina' disciplina.id %}" method="POST">
+
+        {% csrf_token %}
+
+        {% for turma in turmas %}
+
+            {% if turma.inscritos < turma.lotacao %}
+
+                <label>
+                    <input
+                        type="radio"
+                        name="turma"
+                        value="{{ turma.id }}"
+                        {% if aluno in turma.alunos.all %}checked="checked"{% endif %}
+                    >
+                    {% if aluno in turma.alunos.all %}<b>{% endif %}
+
+
+                    {{ turma }}
+
+                    ({% if turma.inscritos >= turma.lotacao %}turma completa,{% endif %}
+                    {{ turma.inscritos }} inscritos | {{ turma.lotacao }} vagas)
+
+                    {% if aluno in turma.alunos.all %}
+                        - inscrito
+                    {% endif %}
+                    {% if aluno in turma.alunos.all %}</b>{% endif %}
+
+                </label>
+
+            {% else %}
+
+                <div class="sem-vaga">
+                    {{ turma }}
+
+                    ({% if turma.inscritos >= turma.lotacao %}turma completa,{% endif %}
+                    {{ turma.inscritos }} inscritos | {{ turma.lotacao }} vagas)
+
+                    {% if aluno in turma.alunos.all %}
+                        <b>  - inscrito </b>
+                    {% endif %}
+                </div>
+
+            {% endif %}
+
+
+        {% endfor %}
+
+
+        <input class="botao pointer" type="submit" value="&check; Inscrever" class="btn btn-success" >
+
+        <a href="{% url 'horarios:disciplinas' %}" class="botao pointer voltar" class="btn btn-success">
+            Disciplinas
+        </a>
+    </form>
+
+
+
+
+{% endblock main %}

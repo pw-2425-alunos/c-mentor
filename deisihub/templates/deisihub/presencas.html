@@ -1,0 +1,144 @@
+{% extends "deisihub/base.html" %}
+{% load custom_tags %}
+
+{% block style %}
+{{ block.super }}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 30px;
+    color: white;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+canvas#presencasChart {
+    max-width: 600px;
+    margin-bottom: 40px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 10px;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 900px;
+}
+table th, table td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+h3 {
+    margin-bottom: 15px;
+}
+{% endblock style %}
+
+{% block title %}DEISI HUB{% endblock %}
+
+{% block main %}
+
+<h3>Presenças por dia</h3>
+<canvas id="presencasChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+
+<script>
+const labels = {{ labels|safe }};
+const values = {{ values|safe }};
+
+const ctx = document.getElementById('presencasChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Número de alunos por dia',
+            data: values,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            borderRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { mode: 'index', intersect: false },
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: 'x',  // só horizontal
+                },
+                zoom: {
+                    wheel: {
+                        enabled: true, // zoom com scroll do rato
+                    },
+                    pinch: {
+                        enabled: true // zoom com gesto pinch no mobile
+                    },
+                    mode: 'x',
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { precision:0 }
+            }
+        }
+    }
+});
+</script>
+
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <td></td>
+            <th>Hora</th>
+            <th>Nome</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in presencas %}
+            {% with previous_item=presencas|get_previous_item:forloop.counter0 %}
+                {% if forloop.first or p.date != previous_item.date %}
+                    <tr><td colspan="4">&nbsp;</td></tr>
+                    <tr>
+                        <th>{{ p.date|date:"d/m/Y" }}</th>
+                        <td style="text-align:right;">{{ p.ordem|stringformat:"3d" }}.</td>
+                        <td>{{ p.time }}</td>
+                        <td>{{ p.aluno.nome_completo }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align:right;">{{ p.ordem|stringformat:"3d" }}.</td>
+                        <td>{{ p.time }}</td>
+                        <td>{{ p.aluno.nome_completo }}</td>
+                    </tr>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock main %}

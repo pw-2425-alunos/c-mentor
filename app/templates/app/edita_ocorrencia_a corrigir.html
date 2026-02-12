@@ -1,0 +1,97 @@
+{% extends "app/base.html" %}
+
+
+{% block style %}
+
+table.form {
+color:grey;
+    border-collapse:collapse;
+    border-radius: 10px;
+}
+
+table.form th, table.info th {
+    text-align:right;
+}
+
+table.form th, table.form td,
+table.info th, table.info td
+{
+    padding: 0.75ch 0 0.75ch 0.75ch ;
+}
+
+table.form {
+    width:100%;
+}
+
+table.form th {
+    width: 8ch;
+}
+
+input[type="text"], select, textarea, option {
+    padding: 0.5ch 1ch;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 100%;
+}
+
+input[type="text"] {
+    border: 1px solid black;
+    width: 97.5%;
+}
+
+textarea{
+    width:97.5%;
+}
+
+.botoes {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1ch;
+}
+
+table.form tr:last-child,
+table.form tr:last-child td:last-child,
+table.form tr:nth-last-child(2),
+table.form tr:nth-last-child(2) td:last-child {
+    padding:0;
+    font-size:0;
+}
+
+{% endblock %}
+
+
+{% block main %}
+
+
+<h3>Utente: {{ utente }}</h3>
+
+
+<p>Editar ocorrência:</p>
+
+{{ form.initial.titulo }}
+
+
+<form action="{% url 'horarios:edita_ocorrencia' utente.id ocorrencia.id %}" method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+
+    <div class="botoes">
+      <label for="id_imagem" class="botao-listado" >Carregar Imagem</label>
+      <label for="id_doc" class="botao-listado" >Carregar Documento</label>
+    </div>
+
+    <div style="text-align:right">
+        <a class="botao-listado" style="display:inline-block; padding: 2.5px 10px" href="{% url 'horarios:utente' utente.id %}" role="button" class="btn btn-warning">Cancelar</a>
+        <input class="botao" type="submit" value="Gravar" class="btn btn-success" style="color:white; background:#bf1d19;">
+    </div>
+
+</form>
+
+<script>
+    document.getElementById("id_imagem").value = "New Button Name";
+</script>
+
+
+{% endblock main %}

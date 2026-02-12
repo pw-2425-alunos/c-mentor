@@ -1,0 +1,190 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+h3 {
+    margin-bottom: 10px;
+    }
+
+
+
+a.sessão, .sessão {
+    display:inline-block;
+    color: black;
+
+    margin: 5px 0;
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    background: white;
+    border: 1px solid black;
+    text-decoration: none;
+    transition: filter 0.3s ease;
+}
+
+a.sessão:hover, .sessão:hover {
+    filter: brightness(80%);
+}
+
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+.azul {
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+
+    margin: 5px 0;
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color  0.3s ease;
+}
+.azul:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+div.disciplina {
+    margin: 0 0 20px;
+}
+
+h1,h2,h3 {color:white;}
+
+{% endblock style %}
+
+
+
+{% block main %}
+
+<body style="background-color: #b5073d;">
+
+    <h2>Mentor {{ request.user.first_name }} {{ request.user.last_name }}</h2>
+
+
+{% for aluno, mentorias, disciplinas_nao_mentorizadas, mentorandos_potenciais_sem_diade in alunos %}
+    {% if alunos|length > 1 %}<h1>{{ mentorias.0.aluno }}</h1>{% endif %}
+    <h3>Mentorias</h3>
+
+    {% for mentor in mentorias %}
+
+        {% if mentor.diades_mentor.exists %}
+
+            <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+                <b>{{ mentor.disciplina }}</b>
+                {% for diade in mentor.diades_mentor.all %}
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <a class="azul" href="{% url 'perfil' diade.mentorando.aluno.id %}">{{ diade.mentorando.aluno }}</a>
+
+                        {% if diade.sessoes.count > 0 %}
+                            <a class="sessão" style="margin-left: auto;" href="{% url 'sessoes' diade.mentor.id  diade.mentorando.id 0 %}">Ver {{ diade.sessoes.count }} sessões</a>
+                        {% endif %}
+                        {% if diade.ativo == False %}
+                            <b style="color: grey; {% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %}">(Suspensa)</b>
+                        {% else %}
+                             <a class="sessão"  style="{% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %} background:#28a745; color:white;" href="{% url 'criar_sessao' diade.id %}">Nova sessão</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+                <b>{{ mentor.disciplina }}</b>
+                <div style="color: red; ">Sem mentorando</div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <h3>Adicionar Mentorando</h3>
+    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+        <form action="{% url 'cria_diade' %}" method='POST'>
+
+            {% csrf_token %}
+
+            <input type="hidden" name="mentor_aluno_id"  value="{{ aluno }}" >
+
+            <select name = 'mentorando_id' style="padding:.375rem; width:100%; margin-bottom: 5px;"required>
+                <option value="">Selecione alunos que precisam de mentoria</option>
+                {% for candidato in mentorandos_potenciais_sem_diade %}
+                           <option value = "{{ candidato.id }}"> {{ candidato.disciplina }}: {{ candidato.aluno }} </option>
+                {% endfor %}
+            </select>
+
+            <input class = "sessão" style="width: 100%; background:#28a745; color:white;" type="submit" value="+Adicionar">
+
+        </form>
+    </div>
+
+    <h3>Adicionar disciplina</h3>
+    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+        <form action="{% url 'cria_mentor' %}" method='POST'>
+
+            {% csrf_token %}
+
+            <input type="hidden" name="mentor_aluno_id"  value="{{ aluno }}" >
+
+            <select name = 'disciplina_id' style="padding:.375rem; width:100%; margin-bottom: 5px;" required>
+                <option value="">Selecione disciplinas para ser mentor</option>
+                {% for disciplina in disciplinas_nao_mentorizadas %}
+                        <option value = "{{ disciplina.id }}"> {{ disciplina.nome }} ({{ disciplina.ano }}A/{{ disciplina.semestre }}S)</option>
+                {% endfor %}
+            </select>
+
+            <input class= "sessão" style="width: 100%; background:#28a745; color:white;" type="submit" value="+Adicionar">
+
+        </form>
+    </div>
+
+{% endfor %}
+
+    <h3>Alunos sem mentor</h3>
+    <p style="margin-top: 0;font-size: 0.90rem; color: white;text-align: center;">
+        Para ser mentor de algum destes alunos, registe-se como mentor da disciplina. O mentorando aparecerá na lista para adicionar mentorando
+    </p>
+    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;" required>
+       <ul>
+        {% for mentorando in mentorandos_sem_diade %}
+            <li><b>{{ mentorando.disciplina }}</b>: {{ mentorando.aluno }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+
+
+</body>
+
+{% endblock main %}

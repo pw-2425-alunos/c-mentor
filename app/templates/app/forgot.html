@@ -1,0 +1,67 @@
+{% extends 'app/base.html' %}
+
+
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+    background: #BEC3C6;
+}
+
+form {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+    max-width: 20ch;
+}
+
+input {
+    display: block;
+    padding:5px 10px;
+    margin: 5px;
+    border: 2px solid green;
+    width: 100%;
+    border-radius: 10px;
+}
+input[type='submit'] {
+    color: white;
+    background: green;
+    width: 113%;
+    transition: background-color 0.3s, filter 0.3s; /* Smooth transition */
+}
+
+input[type='submit']:hover {
+    filter: brightness(85%); /* Reduce brightness by 15% to make the color darker */
+}
+
+{% endblock %}
+
+
+{% block main %}
+<body style="background-color: #BEC3C6;">
+
+ <h1>Primeiro acesso à plataforma <br>ou recuperação de password</h1>
+
+    {% if success %}
+        {{ success }}
+    {% else %}
+        {% if error %}
+            {{ error }}
+        {% endif %}
+
+        <form action="" method="post">
+        {% csrf_token %}
+        <br>
+        <input type="email" name="email" placeholder="Insira o email ..."/>
+        <input type="submit" value="Definir Password" />
+    </form>
+
+    {% endif %}
+</body>
+
+{% endblock %}

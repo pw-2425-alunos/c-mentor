@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+# + libssl-dev, libffi-dev para cryptography; pkg-config para compilações eventuais
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential gcc pkg-config default-libmysqlclient-dev libssl-dev libffi-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+# Garantimos explicitamente estes dois (evita surpresas de cache)
+RUN pip install --no-cache-dir PyJWT==2.8.0 cryptography==42.0.5
+
+# Backend headless p/ matplotlib e diretório de config gravável
+ENV MPLBACKEND=Agg MPLCONFIGDIR=/tmp/mpl
+COPY . .
+
+ENV PYTHONUNBUFFERED=1 DJANGO_SETTINGS_MODULE=projeto.settings RUN_ENV=CLUSTER
+EXPOSE 8000
+CMD sh -lc "python manage.py migrate --noinput --skip-checks && python manage.py shell -c \"from mentoria.models import AnoLectivo; AnoLectivo.objects.get_or_create(ano='25-26')\" && (python manage.py collectstatic --noinput || true) && gunicorn projeto.wsgi:application --bind 0.0.0.0:8000"
+

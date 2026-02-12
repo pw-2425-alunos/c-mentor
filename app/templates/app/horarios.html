@@ -1,0 +1,42 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+a {
+    color: gray;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+{% endblock style %}
+
+
+
+{% block main %}
+
+{% if request.user.is_authenticated %}
+
+<h3>Olá {{ request.user.first_name }} {{ request.user.last_name }}</h3>
+
+<p>Nesta aplicação pode:</p>
+
+{% else %}
+<p>Esta aplicação permite editar o seu horário.</p>
+<p>Autentique-se para:</p>
+{% endif %}
+
+<ul>
+    <li>consultar ou alterar as disciplinas em que está inscrito</li>
+    <li>para cada disciplina, consultar ou alterar a turma em que está inscrito</li>
+</ul>
+
+
+
+{% if request.user.is_authenticated %}
+    <a href="{% url 'horarios:disciplinas' %}" class="botao pointer voltar">
+       Disciplinas
+    </a>
+{% endif %}
+
+
+{% endblock main %}

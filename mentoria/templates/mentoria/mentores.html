@@ -1,0 +1,231 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+}
+
+div.disciplina  {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+h3 {
+    margin-bottom: 10px;
+    }
+
+
+ .disciplina input {
+    display:inline-block;
+
+    font-size: 0.85rem;
+    padding: 5px 5px;
+    border-radius: 50px;
+    color: #BEC3C6;
+
+    text-decoration: none;
+
+
+    background: #b5073d;
+
+    transition: 0.3s;
+    font-weight: bold;
+
+    border: 1px solid #b5073d;
+    border-radius: 20px;
+
+}
+
+.disciplina input:hover {
+    opacity: 1;
+    background-color: #BEC3C6;
+    border: 1px solid #BEC3C6;
+    color: #b5073d
+
+
+}
+
+
+a.sessão {
+    display:inline-block;
+    color: black;
+
+    margin: 5px 0;
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+
+    background: white;
+    border: 1px solid black;
+    text-decoration: none;
+    transition: filter 0.3s ease;
+}
+
+a.sessão:hover{
+    filter: brightness(80%);
+}
+
+
+td.turma span:nth-child(2) {
+    display:none;
+}
+
+
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+}
+
+h1,h2,h3 {color:white;}
+
+{% endblock style %}
+
+
+
+
+
+{% block main %}
+
+<body style="background-color: #b5073d;">
+
+    <h2>Área do Mentor</h2>
+
+{% if vazio == 0 %}
+    <h3>Ainda não és mentor</h3>
+{% endif %}
+
+{% if aluno == "admin" %}
+    {% for mentor_info in mentores_info %}
+    <h3>{{ mentor_info.mentor}}</h3>
+    <h3>Mentorias</h3>
+        {% for mentoria in mentor_info.mentorias %}
+
+            <div class="disciplina"
+                style="background-color: whitesmoke;
+                    ; border: 1px solid black;
+                    "
+            >
+                <b>{{ mentoria.disciplina }}</b>
+                        {% for aluno in mentoria.diades %}
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                                        <a style="text-decoration: none;" href="{% url 'perfil' aluno.id %}">{{ aluno }}</a>
+                                            {% if diade.ativo == False %}
+                                            <b style="color: grey;">(Suspensa)</b>
+                                            {% endif %}
+                                        <br>
+                                    </div>
+                        {% empty %}
+                        <b style="color: green;float: right;">Disponivel</b>
+                        {% endfor %}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% else %}
+
+    {% for mentor_info in mentores_info %}
+                {% for mentoria in mentor_info.mentorias %}
+                <div class="disciplina"
+            style="background-color: whitesmoke;
+                ; border: 1px solid black;
+                "
+        >
+                <b>{{ mentoria.disciplina }}</b>
+                        {% for aluno in mentoria.diades %}
+                            {% for diade in diades %}
+                                {% if diade.mentor.aluno.user == mentor_info.mentor.user %}
+                                    {% if diade.mentorando.aluno == aluno %}
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <a style="text-decoration: none;" href="{% url 'perfil' diade.mentorando.aluno.id %}">{{ aluno }}</a>
+                                            {% if diade.ativo == False %}
+                                            <b style="color: grey; margin-left: auto;">(Suspensa)</b>
+                                            {% else %}
+                                             <a style="margin-left: auto;"class="sessão"  href="{% url 'criar_sessao' diade.id %}">+ Sessão</a>
+                                             {% endif %}
+                                             <a style="margin-right: 10px;"class="sessão"  href="{% url 'sessoes' diade.mentor.id  diade.mentorando.id 0 %}">Sessões</a>
+                                    </div>
+                                        {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% empty %}
+                        <b style="color: green;float: right;">Disponivel</b>
+                        {% endfor %}
+            </div>
+            {% endfor %}
+            {% if mentor_info.candidatos %}
+        <h3>Adicionar Mentorando</h3>
+            <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+                <form action="{% url 'cria_diade' %}" method='POST'>
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="mentor_aluno_id"  value="{{ mentor_info.mentor.id }}" >
+
+                    <select name = 'mentorando_id' style="padding:5px; width:100%; margin-bottom: 5px;"required>
+                        <option value="">Selecione um dos alunos que precisa de mentoria</option>
+                        {% for candidato in mentor_info.candidatos %}
+                                   <option value = "{{ candidato.id }}"> {{ candidato }} </option>
+                        {% endfor %}
+                    </select>
+
+                    <input class = "btn" style="width: 100%;"type="submit" value="+Adicionar">
+
+                </form>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <h3>Adicionar disciplina</h3>
+        <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+            <form action="{% url 'cria_mentor' %}" method='POST'>
+
+                {% csrf_token %}
+
+                <input type="hidden" name="mentor_aluno_id"  value="{{ aluno.id }}" >
+
+                <select name = 'disciplina_id' style="padding:5px; width:100%; margin-bottom: 5px;" required>
+                    <option value="">Escolha uma disciplina na qual quer ser mentor</option>
+                    {% for disciplina in disciplinas %}
+                            <option value = "{{ disciplina.id }}"> {{ disciplina.nome }} ({{ disciplina.ano }}A/{{ disciplina.semestre }}S)</option>
+                    {% endfor %}
+                </select>
+
+                <input class= "btn" style="width: 100%;"type="submit" value="+Adicionar">
+
+            </form>
+        </div>
+
+
+
+        {% if allCandidatos %}
+        <h3>Alunos sem mentor</h3>
+        <p style="margin-top: 0;font-size: 0.90rem; color: white;text-align: center;">
+            Para ser mentor de algum destes alunos, registe-se como mentor da disciplina pedida. O mentorando aparecerá na sua lista para adicionar
+        </p>
+        <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;" required>
+           <ul>
+            {% for candidato in allCandidatos %}
+                <li>{{ candidato.aluno }}, {{ candidato.disciplina }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    {% endif %}
+</body>
+
+
+
+{% endblock main %}

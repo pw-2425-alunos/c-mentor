@@ -1,0 +1,96 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+* { box-sizing: border-box;}
+
+main {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-contents: center;
+    background: #BEC3C6;
+}
+
+form {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    width: 25ch;
+}
+
+input, button {
+    display: block;
+    padding:5px 10px;
+    margin: 5px;
+
+    width: 25ch;
+}
+
+input[type='submit'], button {
+    color: white;
+    background: green;
+    transition: background-color 0.3s, filter 0.3s; /* Smooth transition */
+    font-size: 0.85rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+
+input[type='submit']:hover, button:hover {
+    filter: brightness(85%); /* Reduce brightness by 15% to make the color darker */
+}
+
+input[type='submit']:active, button:active {
+    filter: brightness(70%);
+}
+
+button {
+    color: black;
+    border: 1px solid grey; // #ffc107;
+    background: lightgrey; // #ffc107;
+  //  width: 100%;
+}
+
+a {
+    color: gray;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+{% endblock style %}
+
+
+
+{% block main %}
+
+<body style="background-color: #BEC3C6;">
+
+<h1>Login</h1>
+
+{% if not request.user.is_authenticated %}
+  {{ message }}
+{% endif %}
+
+<form action="{% url 'horarios:login' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="credential" placeholder="username ou email">
+    <input type="password" name="password" placeholder="palavra-passe">
+    <input type="submit" value="Entrar">
+</form>
+
+ <a style = "font-size:1em; font-weight:bold; margin-top:4ch; color: #b5073d; text-decoration:none;" href="{% url 'horarios:fogot_password' %}">
+        <button>Recuperar Password</button>
+      <button>Primeira vez que acede</button>
+    </a>
+
+<p style="text-align:center; margin-top:2em; font-style:italic; font-weight:400;">
+    Perante qualquer dificuldade <a style = "font-size:1em; color: green;" href="mailto:lucio.studer@ulusofona.pt">contacte-nos</a>.
+    </p>
+
+</body>
+
+{% endblock main %}
+
+

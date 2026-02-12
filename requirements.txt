@@ -9,3 +9,8 @@ cryptography
 whitenoise
 gunicorn
 django-ninja
+mysqlclient
+requests
+PyJWT
+cryptography
+matplotlib
