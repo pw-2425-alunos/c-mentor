@@ -15,8 +15,13 @@ gunicorn projeto.wsgi:application \
     --access-logfile - \
     --error-logfile - &
 
-# Espera que o Gunicorn suba
-sleep 10
+# Espera que Gunicorn esteja pronto na porta 3000
+echo "Waiting for Gunicorn to be ready..."
+while ! nc -z localhost 3000; do   
+  sleep 1
+done
 
-# Mantém container vivo
+echo "Gunicorn is up!"
+
+# Mantém o container vivo
 wait
