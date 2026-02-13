@@ -16,8 +16,8 @@ For demo purposes, the database includes 4 students and 2 lectures. You can try 
 | Name            | Role    | Username | Password  |
 |-----------------|---------|----------|-----------|
 | Ada Lovelace    | Mentor  | ada      | cmentor   |
-| Donald Duck     | Mentee  | donald   | mentor    |
-| Manager         | Manager | manager  | mentor    |
+| Donald Duck     | Mentee  | donald   | cmentor    |
+| Manager         | Manager | manager  | cmentor    |
 
 > The manager can see all mentors and mentees, view sessions, access the dashboard, report sessions, and add new students.
 
