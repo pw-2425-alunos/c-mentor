@@ -142,7 +142,6 @@ RUN_ENV = os.getenv("RUN_ENV", "PA")   # "PA" (default) ou "CLUSTER"
 
 DEBUG = os.getenv("DEBUG", "1" if RUN_ENV=="PA" else "0") == "1"
 
-
 RUN_ENV = os.getenv("RUN_ENV", "LOCAL")   # LOCAL | PA | CLUSTER
 
 RUN_ENV = 'LOCAL'
@@ -188,8 +187,21 @@ else:
     MEDIA_ROOT = BASE_DIR / 'media'
     STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'), 
+]
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -230,24 +242,11 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# default static files settings for PythonAnywhere.
-# see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-
-#MEDIA_ROOT = '/home/mentoriasDEISI/projeto/media'
-#MEDIA_URL = '/media/'
-#STATIC_ROOT = '/home/mentoriasDEISI/projeto/static'
-#STATIC_URL = 'static/'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
