@@ -2,149 +2,226 @@
 
 {% block style %}
 
-main {
-    display: flex;
-    flex-direction:column;
-    align-items: center;
-    justify-contents: center;
-}
-
-div.disciplina  {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
-}
-h3 {
-    margin-bottom: 10px;
-    color: white;
-    text-align: center;
-    }
-
-h1,h2 {
-    color: white;
-    }
-
-
-.disciplina input {
-    display:inline-block;
-    color: gray;
-    font-size: 0.85rem;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    background: green;
-    text-decoration: none;
-    width: 100%;
-}
-
-.sumario{
-    overflow-x: auto;
-}
-
-a.sessão {
-    display:inline-block;
-    color: black;
-    font-size: 0.85rem;
-    padding: .375rem .75rem;
-    line-height: 1.5;
-    border-radius: .25rem;
-
-    margin: 5px 0;
-    background: white;
-    text-decoration: none;
-    transition: filter 0.3s ease;
-}
-
-a.sessão:hover{
-    filter: brightness(80%);
-}
-
-td.turma span:nth-child(2) {
-    display:none;
-}
-
+/* --- Corpo e main --- */
 body {
     margin: 0;
-
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
     background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background-position: center;
     background-attachment: fixed;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    color: white;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 800px;
+}
 
+/* --- Caixa “glass” --- */
+div.disciplina {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+div.disciplina:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+/* --- Botões gerais laranja --- */
+a.sessão, a.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 40px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #ff7300;
+    color: black;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+a.sessão:hover, a.button-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+/* --- Botões Mentor / Mentee --- */
+a.mentor-link, a.mentee-link {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: #ff7300;
+    color: black;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+a.mentor-link:hover, a.mentee-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+b {
+    color: white;
+}
+
+/* --- Títulos --- */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* --- Sumário --- */
+.sumario {
+    background-color: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* --- Detalhes escondidos --- */
+div.detail-content {
+    display: none;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+div.detail-content p {
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+/* --- Botão Details abaixo do card --- */
+a.details-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border-radius: 30px;
+    text-decoration: none;
+    color: white;
+    border: 2px solid #ff7300;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+a.details-btn:hover {
+    background-color: #ff7300;
+    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,115,0,0.5);
+}
+
+/* --- Botões Edit / Confirm no topo à direita --- */
+.actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+a.sessão.edit {
+    background-color: transparent;
+    border: 2px solid #ff7300;
+    color: white;
+}
+
+a.sessão.confirm {
+    background-color: transparent;
+    border: 2px solid #28a745;
+    color: white;
+}
+
+a.sessão.edit:hover, a.sessão.confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,115,0,0.5);
+}
 
 {% endblock style %}
 
-
-
-
-
 {% block main %}
 
-<body style="background-color: #b5073d;">
+<main>
 
-<h1 style="text-align: center;">
-Sessions of {{ disciplina }}
-</h1>
-
+<h1>Sessions of {{ disciplina }}</h1>
 <h3>Mentor: {{ mentor.aluno }} | Mentee: {{ mentorando.aluno }}</h3>
 
-
-
-
-
 {% if sep == 0 %}
-
-<a class="sessão" href="{% url 'criar_sessao' diade.id %}" style="display: block; width:100%; text-align:center; background:#28a745; color:white;">Create a new session</a>
-
+    <a class="sessão edit" href="{% url 'criar_sessao' diade.id %}" style="width:100%; text-align:center; margin-bottom:20px;">Create a new session</a>
 {% endif %}
 
 {% for sessao in sessoes %}
-    <div class="disciplina"
-        style="background-color: whitesmoke;
-            ; border: 1px solid black;
-            "
-    >
-        <h3 style="color:black;">Session of {{ sessao.data|date:"d.m.y, H:i" }}</h3>
-
-            <b>Summary</b>
-            <br>
-            <div class="sumario">{{ sessao.sumario }}</div>
-            {% if sessao.confirmado == False %}
-            <div style="color: red; margin:20px 20px 0; font-size:small;"><b>Important:</b> The mentee must confirm on the platform that the session was held.</div>
+    <div class="disciplina">
+        <div class="actions">
+            {% if sep == 0 %}
+                <a class="sessão edit" href="{% url 'edita' sessao.id %}">Edit</a>
+            {% else %}
+                {% if not sessao.confirmado %}
+                    <a class="sessão confirm" href="{% url 'av_mentorando' sessao.id %}">Confirm Session</a>
+                {% endif %}
             {% endif %}
-            <br>
+        </div>
 
-            <a class="sessão" href="{% url 'vermais' sessao.id %}" style="float: right; margin-right: 10px; border: 1px solid grey;">
-                Details
-            </a>
-        {% if sep == 0 %}
+        <!-- Data + Summary visíveis -->
+        <h3>Session of {{ sessao.data|date:"d.m.Y, H:i" }}</h3>
 
-        <a class="sessão" href="{% url 'edita' sessao.id %}" style="float: right; margin-right: 10px; background:#ffc107; ">
-            Edit
-        </a>
-        {% else %}
-            {% if sessao.confirmado == False %}
-            <a class="sessão" href="{% url 'av_mentorando' sessao.id %}" style="float: right; margin-right: 10px;">
-                Confirm Session
-            </a>
-            {% endif %}
+        <div class="sumario">
+            <b>Summary:</b><br>
+            {{ sessao.sumario }}
+        </div>
+
+        {% if not sessao.confirmado %}
+            <div style="color: red; margin-top:10px; font-size:small;">
+                <b>Important:</b> The mentee must confirm this session on the platform.
+            </div>
         {% endif %}
-    </div>
 
+        <!-- Botão Details que mostra/esconde todo o restante -->
+        <a href="javascript:void(0);" class="details-btn"
+           onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block';">
+           Details
+        </a>
+
+        <div class="detail-content">
+            <p><b>Mentor:</b> <a class="mentor-link" href="{% url 'perfil' sessao.diade.mentor.aluno.id %}" target="_blank">{{ sessao.diade.mentor.aluno }}</a></p>
+            <p><b>Mentee:</b> <a class="mentee-link" href="{% url 'perfil' sessao.diade.mentorando.aluno.id %}" target="_blank">{{ sessao.diade.mentorando.aluno }}</a></p>
+            <p><b>Session Objectives:</b> {{ sessao.objetivo }}</p>
+            <p><b>Resources:</b> {{ sessao.recursos }}</p>
+            <p><b>Evaluation:</b> <b>Mentor:</b> {{ sessao.avaliacao_mentor }} <b>/ Mentee:</b> {{ sessao.avaliacao_mentorando }}</p>
+            <p><b>Observations / Difficulties:</b> {{ sessao.observacoes }}</p>
+            <p><b>Tasks for Next Session:</b> {{ sessao.planificacao_proxima_sessao }}</p>
+        </div>
+    </div>
 {% endfor %}
 
-<a href="{% url 'mentores' %}" class="sessão">Return</a>
+<a class="sessão edit" href="{% url 'mentores' %}" style="margin-top:20px; width:100%; text-align:center;">Return</a>
 
-</body>
-
-
+</main>
 
 {% endblock main %}

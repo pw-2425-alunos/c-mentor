@@ -803,43 +803,6 @@ def dashboard_view(request):
 
 
 
-def old_cria_grafico():
-
-    ano = AnoLectivo.objects.get(ano='25-26')
-    locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
-    ano_atual = datetime.now().year
-
-    sessoes_por_mes = Sessao.objects.filter(data__year=ano_atual).annotate(mes=ExtractMonth('data')).values('mes').annotate(count=Count('id')).order_by('mes')
-
-
-
-    meses = [item['mes'] for item in sessoes_por_mes]
-    count = [item['count'] for item in sessoes_por_mes]
-    nomes_meses = [datetime(2023, mes, 1).strftime('%B') for mes in meses]
-
-    plt.barh(meses, count)
-    plt.ylabel("Mês")
-    plt.yticks(ticks=meses, labels=nomes_meses)
-    plt.xlabel("Nº de Sessões")
-
-    for index, value in enumerate(count):
-        plt.text(value, meses[index], str(value))
-
-    plt.autoscale()
-
-    fig = plt.gcf()
-    plt.close()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png')
-
-
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = urllib.parse.quote(string)
-
-    return uri
-
 
 
 import locale
@@ -851,12 +814,18 @@ import io
 import base64
 import urllib
 
+from matplotlib.ticker import MaxNLocator
+
+from matplotlib.ticker import MaxNLocator
+
 def cria_grafico():
     ano = AnoLectivo.objects.get(ano='25-26')
-    # Definir o locale para português
-    locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
+    try:
+        locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
+    except locale.Error:
+        locale.setlocale(locale.LC_TIME, 'C') 
 
-    # Calcular a data limite (6 meses atrás)
+    # Data limite (6 meses atrás)
     data_limite = datetime.now() - timedelta(days=12 * 30)
 
     # Obter sessões dos últimos 6 meses
@@ -868,35 +837,47 @@ def cria_grafico():
         )
         .values('mes', 'ano')
         .annotate(count=Count('id'))
-        .order_by('ano', 'mes')  # Ordenar por ano e depois por mês
+        .order_by('ano', 'mes')
     )
 
-    # Extrair dados para o gráfico
+    # Dados para o gráfico
     meses_anos = [f"{datetime(item['ano'], item['mes'], 1).strftime('%B %Y')}" for item in sessoes_por_mes]
     counts = [item['count'] for item in sessoes_por_mes]
-    indices = range(len(meses_anos))  # Índices para o eixo vertical
+    indices = range(len(meses_anos))
 
-    # Criar o gráfico
-    plt.figure(figsize=(10, 6))
-    plt.barh(indices, counts, color='skyblue')
-    plt.yticks(indices, meses_anos)  # Rótulos no formato "Mês Ano"
-    plt.xlabel("Nº de Sessões")
-    plt.ylabel("Mês e Ano")
-    plt.title("Sessões dos Últimos 6 Meses")
+    # Criar gráfico com fundo transparente
+    plt.figure(figsize=(12, 8), facecolor='none')  # figsize maior para suportar fonte maior
+    bars = plt.barh(indices, counts, color='#ff7300')  # Barra laranja
 
-    # Adicionar valores no gráfico
+    ax = plt.gca()  # Pega o eixo atual
+
+    # Eixo X como inteiros
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # Ajustar cores dos eixos e rótulos e aumentar fonte
+    plt.yticks(indices, meses_anos, color='white', fontsize=20)   # meses
+    plt.xticks(color='white', fontsize=20)                        # eixo X
+    plt.xlabel("Number of sessions", color='white', fontsize=20)
+
+    # Deixar linhas de grade e bordas brancas
+    plt.grid(axis='x', color='white', linestyle='--', alpha=0.3)  # grade horizontal
+    ax.spines['bottom'].set_color('white')
+    ax.spines['left'].set_color('white')
+    ax.spines['top'].set_color('none')
+    ax.spines['right'].set_color('none')
+
+    # Valores das barras em branco (como inteiros) e maior
     for index, value in enumerate(counts):
-        plt.text(value, indices[index], str(value))
+        plt.text(value + 0.2, indices[index], f"{int(value)}", color='white', va='center', fontsize=24)
 
-    # Salvar o gráfico em memória como PNG
+    # Salvar gráfico em PNG transparente
     buf = io.BytesIO()
     plt.tight_layout()
-    plt.savefig(buf, format='png')
+    plt.savefig(buf, format='png', transparent=True)
     buf.seek(0)
 
-    # Codificar o gráfico em Base64
+    # Codificar em Base64
     string = base64.b64encode(buf.read())
     uri = urllib.parse.quote(string)
 
     return uri
-

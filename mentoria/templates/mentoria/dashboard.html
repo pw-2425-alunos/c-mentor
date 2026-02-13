@@ -2,218 +2,170 @@
 
 {% block style %}
 
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    color: white;
+}
+
 main {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
-    justify-contents: center;
-    max-width: 800px;
+    justify-content: flex-start;
+    width: 95%;
+    max-width: 900px;
+    padding: 20px;
 }
 
-div.disciplina  {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-
-
-}
-h3 {
-    margin-bottom: 10px;
-    color: white;
-    }
-
-h2 {
-    color: white;
-    }
-
-
- .disciplina input {
-    display:inline-block;
-    color: gray;
-    font-size: 0.85rem;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    background: green;
-    text-decoration: none;
+/* Card principal */
+div.disciplina {
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
     width: 100%;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-a.sessão {
-    display:inline-block;
-    color: black;
-    font-size: 0.85rem;
-    padding: 2px 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    background: white;
-    border: 1px solid black;
-    text-decoration: none;
+/* Cabeçalhos */
+h1, h2, h3 {
+    color: white;
+    margin-bottom: 1rem;
 }
 
-
-td.turma span:nth-child(2) {
-    display:none;
-}
-
-table{
-
+/* Resumo detalhes como botões laranja */
+details {
+    display: block;
     width: 100%;
-}
-
-table, th, td{
-    border: 1px solid black;
-}
-.flex {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-}
-
-.flex > div {
-    flex: 1 1 calc(50% - 10px); /* Subtrair a margem para que duas divs caibam na mesma linha */
     box-sizing: border-box;
-    margin: 5px; /* Margem de 5px ao redor de cada div */
 }
 
-body {
+details summary {
+    display: block; /* ocupa 100% da largura do details */
+    cursor: pointer;
+    padding: 10px 16px;
+    font-weight: bold;
+    background-color: #ff7300;
+    color: black;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
 
-margin: 0;
-
-width: 100%;
-height: 100%;
-background-size: cover;
-background-position: center center;
-background-repeat: no-repeat;
-background-attachment: fixed;
-background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+details summary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,115,0,0.5);
 }
 
 
-table {
-    border-collapse: collapse;
-}
-td, th {
-    padding:5px 10px;
-}
-th, details {
-    text-align:left;
+/* Listas internas */
+ol, ul {
+    margin-left: 20px;
+    padding-left: 10px;
 }
 
 .azul {
-    color:dodgerblue;
-    font-weight:bold;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.azul:hover {
+    text-decoration: underline;
+}
+
+/* Botões gerais */
+a.sessão, .disciplina input {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border-radius: 40px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+a.sessão {
+    background-color: #ff7300;
+    color: black;
+    border: none;
+}
+
+a.sessão:hover, .disciplina input:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
 {% endblock style %}
 
-
-
-
-
 {% block main %}
 
-<body style="background-color: #b5073d;">
+<main>
 
-    <h2>Dashboard</h2>
+    <h2 style="text-align:center;">C-Mentor Network Dashboard</h2>
 
-    <div class="disciplina"
-        style="background-color: whitesmoke;
-            ; border: 1px solid black; text-align: center;
-            width: 95%;">
+    <div class="disciplina" style="display:flex; flex-direction:column; gap:20px;">
 
-    <table border=1>
-        <tr>
-            <td style="text-align:left;">
-                <b>{{ alunos_mentores|length }} Mentors</b><br>
-                Available for {{ mentores|length }} mentorships in different disciplines.<br>
-                There are {{diades|length}} diades, and {{ mentores_sem_diade|length }} are still available.<br>
-            </td>
-            <td>
-                <details>
-                    <summary>Mentors</summary>
-                    <ol>{% for m in alunos_mentores %} <li>{{ m }}</li> {% endfor %}</ol>
-                </details>
-            </td>
-        </tr>
+        <details>
+            <summary>{{ alunos_mentores|length }} mentors</summary>
+            <p>There are {{ alunos_mentores|length }} mentors: </p>
+            <ol>{% for m in alunos_mentores %}<li>{{ m }}</li>{% endfor %}</ol>
+            <p>These mentors have {{ mentores|length }} mentorships. There are {{diades|length}} diades, and still {{ mentores_sem_diade|length }} diades to be established (mentees without mentor).</p>
+            
+        </details>
 
+        <details>
+            <summary>{{ alunos_mentorandos|length }} mentees</summary>
+            <p>There are {{ alunos_mentorandos|length }} mentees. </p>
+            <ol>{% for m in alunos_mentorandos %}<li>{{ m }}</li>{% endfor %}</ol>
+            <p>They need {{ mentorandos|length }} diades. {{ mentorandos_sem_diade|length }} mentorships are missing.</p>
+        </details>
 
-        <tr>
-            <td style="text-align:left;">
-                <b>{{ alunos_mentorandos|length }} Mentees</b><br>
-                Need {{ mentorandos|length }} diades (some students ask for support in several disciplines).<br>
-                There are {{diades|length}} diades, and {{ mentorandos_sem_diade|length }} are still missing.<br>
-            </td>
-            <td>
-                <details>
-                    <summary>Mentees</summary>
-                    <ol>{% for m in alunos_mentorandos %} <li>{{ m }}</li> {% endfor %}</ol>
-                </details>
-            </td>
-        </tr>
+        <details>
+            <summary>{{ disciplinas_com_mentoria|length }} lectures with mentors</summary>
+            <ol>{% for d in disciplinas_com_mentoria %}<li>{{ d }}</li>{% endfor %}</ol>
+        </details>
 
-        <tr>
-            <th>{{ disciplinas_com_mentoria|length }} disciplines with mentorship</th>
-            <td >
-                <details>
-                    <summary>Disciplines with mentorship</summary>
-                    <ol>{% for d in disciplinas_com_mentoria %} <li>{{ d }}</li> {% endfor %}</ol>
-                </details>
-            </td>
-        </tr>
-        <tr>
-            <th>{{ disciplinas_em_falta|length }} disciplines with students without mentor</th>
+        <details>
+            <summary>{{ disciplinas_em_falta|length }} lectures needing mentors</summary>
+            <ol>{% for d in disciplinas_em_falta %}<li>{{ d }}</li>{% endfor %}</ol>
+        </details>
 
-            <td >
-                <details>
-                    <summary>Disciplines without mentorship</summary>
-                    <ol>{% for d in disciplinas_em_falta %} <li>{{ d }}</li> {% endfor %}</ol>
-                </details>
-            </td>
-        </tr>
+        <details>
+            <summary>{{ mentorandos_sem_diade|length }} mentees without mentor</summary>
+            <ol>{% for m in mentorandos_sem_diade %}<li><b>{{ m.disciplina }}</b>: {{ m.aluno }}</li>{% endfor %}</ol>
+        </details>
 
-        <tr>
-            <th class="azul">{{ mentorandos_sem_diade|length }} mentees without mentorship</th>
-            <td >
-                <details>
-                    <summary class="azul">Mentees without mentorship</summary>
-                    <ol>{% for m in mentorandos_sem_diade %} <li><b>{{ m.disciplina }}</b>: {{ m.aluno }}</li> {% endfor %}</ol>
-                </details>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <details>
-                    <summary><b>Sessions by mentee</b></summary>
-                    <ol>
-                        {% for disciplina, mentorandos_disciplina in mentorandos %}
-                        <li><b>{{ disciplina }}</b>
-                            <ul>{% for m in mentorandos_disciplina %} <li><b>{{ m.sessoes }} sessions</b>: {{ m.nome }} ({{ m.numero }}), mentor: {{ m.mentor }} </li> {% endfor %}</ul>
-                        </li>
-                        {% endfor %}
-                    </ol>
-                </details>
-            </td>
-        </tr>
-
-    </table>
+        <details>
+            <summary>Sessions by mentee</summary>
+            <ol>
+                {% for disciplina, mentorandos_disciplina in mentorandos %}
+                    <li><b>{{ disciplina }}</b>
+                        <ul>
+                            {% for m in mentorandos_disciplina %}
+                                <li><b>{{ m.sessoes }} sessions</b>: {{ m.nome }}, mentor: {{ m.mentor }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ol>
+        </details>
 
     </div>
 
+    <h2 style="margin-top:40px;">Sessions per month</h2>
+    <p style="text-align: center"><img src="data:image/png;base64,{{ data }}" alt="Sessions per month" width="80%"></p>
 
-
-    <h2>Sessions per month</h2>
-    <p><img src="data:image/png;base64,{{ data }}" alt=""></p>
-
-
-
-
-</body>
-
-
+</main>
 
 {% endblock main %}

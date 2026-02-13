@@ -162,8 +162,13 @@ html {
 
         
         <div class="buttons">
-            <a href="{% url 'mentores' %}" class="btn-hero btn-primary">Join as Mentor</a>
-            <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">Join as Mentee</a>
+            {% if request.user.is_authenticated %}
+        <a href="{% url 'mentores' %}" class="btn-hero btn-primary">My Mentees</a>
+        <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">My Mentors</a>
+    {% else %}
+        <a href="{% url 'mentores' %}" class="btn-hero btn-primary">Join as Mentor</a>
+        <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">Join as Mentee</a>
+    {% endif %}
         </div>
     </div>
     <a href="#about" class="scroll-down">

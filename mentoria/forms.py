@@ -10,44 +10,42 @@ class SessaoForm(ModelForm):
         model = Sessao
         fields = '__all__'
         labels = {
-        'objetivo': 'Objetivos da sessão',
-        'recursos': 'Recursos utilizados',
-        'avaliacao_mentor': 'Avaliação do trabalho realizado pelo Mentorando',
-        'avaliacao_mentorando': 'Avaliação do trabalho realizado pelo Mentor',
-        'observacoes': 'Observações/Dificuldades encontradas',
-        'planificacao_proxima_sessao': 'Planificação da sessão seguinte',
-        'sumario': 'Sumário',
-    }
+            'data': 'Session Date',
+            'objetivo': 'Session Objectives',
+            'recursos': 'Resources Used',
+            'avaliacao_mentor': 'Evaluation of the session by the mentor',
+            'avaliacao_mentorando': 'Evaluation of the session by the mentee',
+            'observacoes': 'Observations / Difficulties Encountered',
+            'planificacao_proxima_sessao': 'Homework',
+            'sumario': 'Session Summary',
+        }
         widgets = {
             'diade': forms.HiddenInput(),
             'avaliacao_mentor': forms.NumberInput(
-            attrs={
-                'type': 'range',
-                'min': '0',
-                'max': '5',
-                'id': 'id_avaliacao_mentor',
-                'style': ' padding:0',
-            }),
+                attrs={
+                    'type': 'range',
+                    'min': '0',
+                    'max': '5',
+                    'id': 'id_avaliacao_mentor',
+                    'style': 'padding:0',
+                }
+            ),
             'avaliacao_mentorando': forms.HiddenInput(),
             'data': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'sumario':forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
+            'sumario': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
             'confirmado': forms.HiddenInput(),
             'reportado': forms.HiddenInput(),
-            'objetivo':forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
-            'recursos':forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
-            'observacoes':forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
-            'planificacao_proxima_sessao':forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
-
+            'objetivo': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
+            'recursos': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
+            'observacoes': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
+            'planificacao_proxima_sessao': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
         }
 
     def clean_data(self):
         data = self.cleaned_data.get('data')
         if data:
-            agora = timezone.now()
-            limite_inferior = agora - timedelta(days=5)
-            if data < limite_inferior:
-                raise ValidationError("A data da sessão não pode ser anterior a 5 dias da data atual.")
+            now = timezone.now()
+            min_date = now - timedelta(days=5)
+            if data < min_date:
+                raise ValidationError("The session date cannot be earlier than 5 days before today.")
         return data
-
-
-
