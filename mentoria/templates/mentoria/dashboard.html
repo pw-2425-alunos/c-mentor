@@ -114,7 +114,20 @@ a.sessão:hover, .disciplina input:hover {
 
     <h2 style="text-align:center;">C-Mentor Network Dashboard</h2>
 
+
     <div class="disciplina" style="display:flex; flex-direction:column; gap:20px;">
+
+        <details>
+            <summary>{{ alunos|length }} students</summary>
+            <ol>
+                {% for aluno in alunos %}
+                    <li>
+                        <b>{{ aluno.nome_completo }}</b> (nº {{ aluno.numero }})<br>
+                        Course: {{ aluno.curso }} | Year: {{ aluno.ano }}
+                    </li>
+                {% endfor %}
+            </ol>
+        </details>
 
         <details>
             <summary>{{ alunos_mentores|length }} mentors</summary>
@@ -147,7 +160,7 @@ a.sessão:hover, .disciplina input:hover {
         </details>
 
         <details>
-            <summary>Sessions by mentee</summary>
+            <summary>{{ sessoes|length }} hours of sessions</summary>
             <ol>
                 {% for disciplina, mentorandos_disciplina in mentorandos %}
                     <li><b>{{ disciplina }}</b>

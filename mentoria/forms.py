@@ -1,9 +1,91 @@
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth.models import User
+from app.models import Aluno   
+
+from django import forms
+from django.forms import ModelForm
 from .models import Sessao
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
+
+# Formulário para criar Aluno e User juntos
+class AlunoCreateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(label='First Name', max_length=150)
+    last_name = forms.CharField(label='Last Name', max_length=150)
+    username = forms.CharField(label='Student Number (Username)', max_length=100)
+
+    class Meta:
+        model = Aluno
+        fields = ['numero', 'curso', 'ano']
+        labels = {
+            'numero': 'Student Number',
+            'curso': 'Course',
+            'ano': 'Year',
+        }
+        widgets = {
+            'ano': forms.Select(),
+        }
+
+    def save(self, commit=True):
+        # Cria User primeiro, sem password definida
+        user = User.objects.create_user(
+            username=self.cleaned_data['username'],
+            email=self.cleaned_data['email'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            password=None  # Sem password definida
+        )
+        aluno = super().save(commit=False)
+        aluno.user = user
+        if commit:
+            aluno.save()
+        return aluno
+    
+
+from django.contrib.auth.models import User
+
+class AlunoUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(label='First Name', max_length=150)
+    last_name = forms.CharField(label='Last Name', max_length=150)
+    username = forms.CharField(label='Student Number (Username)', max_length=100)
+
+    class Meta:
+        model = Aluno
+        fields = ['numero', 'curso', 'ano']
+        widgets = {
+            'ano': forms.Select(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Pre-fill user fields if editing
+        if self.instance and self.instance.pk:
+            user = self.instance.user
+            self.fields['email'].initial = user.email
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+            self.fields['username'].initial = user.username
+
+    def save(self, commit=True):
+        aluno = super().save(commit=False)
+
+        # Update related User
+        user = aluno.user
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.username = self.cleaned_data['username']
+
+        if commit:
+            user.save()
+            aluno.save()
+
+        return aluno
 
 class SessaoForm(ModelForm):
     class Meta:

@@ -1,8 +1,13 @@
-
+    
 from . import views
 from django.urls import path, include
 
 urlpatterns = [
+    path('students/register/', views.regista_aluno_view, name='regista_aluno'),
+    path('students/', views.students_list_view, name='students_list'),
+    path('students/edit/<int:pk>/', views.edit_student, name='edit_student'),
+
+    
     path('diades/', views.diades_view, name='diades'),
     path('mentor/', views.mentores_view, name='mentores'),
 

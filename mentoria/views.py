@@ -1,7 +1,9 @@
+
+
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
-from django.contrib.auth.decorators import login_required
-from .forms import SessaoForm
+from .forms import SessaoForm, AlunoCreateForm
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 from django.http import HttpResponse, JsonResponse
 
@@ -784,6 +786,8 @@ def dashboard_view(request):
     mentorandos_sem_diade = Mentorando.objects.exclude(diades_mentorando__isnull=False).filter(ano_lectivo=ano, disciplina__semestre=semestre).order_by('disciplina__nome', 'aluno')
     mentores_sem_diade = Mentor.objects.exclude(diades_mentor__isnull=False).filter(ano_lectivo=ano, disciplina__semestre=semestre).order_by('disciplina__nome', 'aluno')
 
+    from app.models import Aluno
+    alunos = Aluno.objects.all()
     context = {
         'sessoes': sessoes,
         'diades': diades,
@@ -797,8 +801,9 @@ def dashboard_view(request):
         'mentores_sem_diade': mentores_sem_diade,
         'data': cria_grafico(),
         'ano': ano,
-        'semestre':semestre}
-
+        'semestre':semestre,
+        'alunos': alunos,
+    }
     return render(request, 'mentoria/dashboard.html',context)
 
 
@@ -881,3 +886,54 @@ def cria_grafico():
     uri = urllib.parse.quote(string)
 
     return uri
+
+
+
+
+
+
+# Apenas gestores podem aceder
+def is_gestor(user):
+    return user.is_authenticated and user.groups.filter(name="Gestores").exists()
+
+@login_required
+@user_passes_test(is_gestor)
+def regista_aluno_view(request):
+    created_user = None
+    if request.method == 'POST':
+        form = AlunoCreateForm(request.POST)
+        if form.is_valid():
+            aluno = form.save()
+            created_user = aluno.user.username
+            form = AlunoCreateForm()  # Limpa o form após sucesso
+    else:
+        form = AlunoCreateForm()
+    return render(request, 'mentoria/regista_aluno.html', {'form': form, 'created_user': created_user})
+
+
+@login_required
+def students_list_view(request):
+    alunos = Aluno.objects.select_related('user', 'curso').all()
+    return render(request, 'mentoria/students_list.html', {'alunos': alunos})
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Aluno
+from .forms import AlunoUpdateForm   
+
+def edit_student(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+
+    if request.method == "POST":
+        form = AlunoUpdateForm(request.POST, instance=aluno)
+        if form.is_valid():
+            form.save()
+            return redirect('students_list')  # change to your students list url name
+    else:
+        form = AlunoUpdateForm(instance=aluno)
+
+    return render(request, 'mentoria/edit_student.html', {
+        'form': form,
+        'aluno': aluno
+    })

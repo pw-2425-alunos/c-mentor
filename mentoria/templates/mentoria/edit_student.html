@@ -1,0 +1,92 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 700px;
+}
+
+/* Glass card */
+.form-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Form fields */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* Buttons */
+button.primary-btn {
+    background-color: #ff7300;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+{% endblock %}
+
+{% block main %}
+
+<main>
+
+<h2>Edit Student</h2>
+
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="primary-btn">Save Changes</button>
+    </form>
+</div>
+
+</main>
+
+{% endblock %}

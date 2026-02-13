@@ -1,0 +1,148 @@
+{% extends "app/base.html" %}
+
+{% block style %}
+
+/* --- Body and main --- */
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 900px;
+}
+
+/* --- Glass card --- */
+div.disciplina {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+div.disciplina:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+/* --- Styled table --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: rgba(255,115,0,0.9);
+    color: black;
+}
+
+thead th {
+    padding: 12px;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255,255,255,0.05);
+}
+
+tbody td {
+    padding: 15px 10px;
+}
+
+/* --- Orange buttons --- */
+a.button-link, a.primary-btn {
+    display: inline-block;
+    background-color: #ff7300;
+    color: black;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a.button-link:hover,
+a.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+/* Full width top button */
+a.primary-btn {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+{% endblock style %}
+
+{% block main %}
+
+<main>
+
+<h1>Students</h1>
+
+<a href="{% url 'regista_aluno' %}" class="primary-btn">
+    Register New Student
+</a>
+
+<div class="disciplina">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Year</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for aluno in alunos %}
+            <tr>
+                <td>{{ aluno.id }}</td>
+                <td>{{ aluno.nome_completo }}</td>
+                <td>{{ aluno.user.username }}</td>
+                <td>{{ aluno.user.email }}</td>
+                <td>{{ aluno.curso.nome }}</td>
+                <td>{{ aluno.ano }}</td>
+                <td>
+                    <a href="{% url 'edit_student' aluno.id %}" class="button-link">
+                         Edit
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</main>
+
+{% endblock %}

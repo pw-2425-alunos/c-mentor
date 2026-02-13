@@ -234,10 +234,10 @@
         <div>
             <a href="{% url 'info' %}"><img src="{% static 'app/caccelerate.png' %}" alt="C-Accelerate" height="20px" style="margin:10px;"></a>
         </div>
-        {% if request.user.is_authenticated %}
+		{% if request.user.is_authenticated and request.resolver_match.url_name != 'info' %}
 		<h3 class="titulo">
 			C-Mentor Network
-        </h3>
+		</h3>
 		{% endif %}
         <nav>
 			{% block nav %}
@@ -254,6 +254,7 @@
 						<a href="{% url 'all_sessoes' %}" role="menuitem" tabindex="0">Sessions</a>
 
 						{% if request.user|in_group:"Gestores" %}
+							<a href="{% url 'students_list' %}" role="menuitem" tabindex="0">Students</a>
 							<a href="{% url 'dashboard' %}" role="menuitem" tabindex="0">Dashboard</a>
 						{% endif %}
 						<a href="{% url 'horarios:logout' %}" role="menuitem" tabindex="0">Log out
