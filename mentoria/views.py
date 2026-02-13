@@ -598,7 +598,8 @@ def all_sessoes_view(request):
 
     # Ordenar diretamente no queryset
     sessoes = sessoes_qs.order_by(
-        'diade__mentor__aluno__nome',  # ou outro campo adequado
+        'diade__mentor__aluno__user__first_name',
+        'diade__mentor__aluno__user__last_name',
         'data'
     )
 

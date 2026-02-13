@@ -145,6 +145,8 @@ DEBUG = os.getenv("DEBUG", "1" if RUN_ENV=="PA" else "0") == "1"
 
 RUN_ENV = os.getenv("RUN_ENV", "LOCAL")   # LOCAL | PA | CLUSTER
 
+RUN_ENV = 'LOCAL'
+
 if RUN_ENV == "PA":
     DATABASES = {
         'default': {
