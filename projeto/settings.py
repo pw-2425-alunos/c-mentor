@@ -184,8 +184,12 @@ else:
         }
     }
     
+    MEDIA_ROOT = BASE_DIR / 'mediafiles'
+    MEDIA_URL = '/media/'
+    
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
     STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
     
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'), 
@@ -196,9 +200,6 @@ else:
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
-
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
 
 
 # Password validation
