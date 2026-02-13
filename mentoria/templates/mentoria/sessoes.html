@@ -91,10 +91,10 @@ body {
 <body style="background-color: #b5073d;">
 
 <h1 style="text-align: center;">
-Sessões de {{ disciplina }}
+Sessions of {{ disciplina }}
 </h1>
 
-<h3>Mentor: {{ mentor.aluno }} | Mentorando: {{ mentorando.aluno }}</h3>
+<h3>Mentor: {{ mentor.aluno }} | Mentee: {{ mentorando.aluno }}</h3>
 
 
 
@@ -102,7 +102,7 @@ Sessões de {{ disciplina }}
 
 {% if sep == 0 %}
 
-<a class="sessão" href="{% url 'criar_sessao' diade.id %}" style="display: block; width:100%; text-align:center; background:#28a745; color:white;">Criar uma nova sessão</a>
+<a class="sessão" href="{% url 'criar_sessao' diade.id %}" style="display: block; width:100%; text-align:center; background:#28a745; color:white;">Create a new session</a>
 
 {% endif %}
 
@@ -112,29 +112,28 @@ Sessões de {{ disciplina }}
             ; border: 1px solid black;
             "
     >
-        <h3 style="color:black;">Sessão de {{ sessao.data|date:"d.m.y, H:i" }}</h3>
+        <h3 style="color:black;">Session of {{ sessao.data|date:"d.m.y, H:i" }}</h3>
 
-
-            <b>Sumario</b>
+            <b>Summary</b>
             <br>
             <div class="sumario">{{ sessao.sumario }}</div>
             {% if sessao.confirmado == False %}
-            <div style="color: red; margin:20px 20px 0; font-size:small;"><b>Importante:</b> O mentorando deverá confirmar na plataforma que a sessão foi realizada.</div>
+            <div style="color: red; margin:20px 20px 0; font-size:small;"><b>Important:</b> The mentee must confirm on the platform that the session was held.</div>
             {% endif %}
             <br>
 
             <a class="sessão" href="{% url 'vermais' sessao.id %}" style="float: right; margin-right: 10px; border: 1px solid grey;">
-                Detalhes
+                Details
             </a>
         {% if sep == 0 %}
 
         <a class="sessão" href="{% url 'edita' sessao.id %}" style="float: right; margin-right: 10px; background:#ffc107; ">
-            Editar
+            Edit
         </a>
         {% else %}
             {% if sessao.confirmado == False %}
             <a class="sessão" href="{% url 'av_mentorando' sessao.id %}" style="float: right; margin-right: 10px;">
-                Confirmar Sessão
+                Confirm Session
             </a>
             {% endif %}
         {% endif %}
@@ -142,7 +141,7 @@ Sessões de {{ disciplina }}
 
 {% endfor %}
 
-<a href="{% url 'mentores' %}" class="sessão">⏎ Voltar</a>
+<a href="{% url 'mentores' %}" class="sessão">Return</a>
 
 </body>
 

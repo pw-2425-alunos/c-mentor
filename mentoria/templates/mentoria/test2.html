@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-Mentor</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero {
+      max-width: 800px;
+      padding: 20px;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: slideUp 1s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    .tagline {
+      font-size: 1.3rem;
+      opacity: 0;
+      margin-bottom: 40px;
+      animation: slideUp 1s ease forwards;
+      animation-delay: 0.6s;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: slideUp 1s ease forwards;
+      animation-delay: 0.9s;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: slideUp 1s ease forwards;
+      animation-delay: 1.2s;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background-color: #38bdf8;
+      color: #0f172a;
+    }
+
+    .btn-outline {
+      border: 2px solid #38bdf8;
+      color: #38bdf8;
+    }
+
+    /* Hover animation */
+    .btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:hover {
+      background-color: #0ea5e9;
+    }
+
+    .btn-outline:hover {
+      background-color: #38bdf8;
+      color: #0f172a;
+    }
+
+    /* Floating background animation */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(56,189,248,0.2), transparent 70%);
+      border-radius: 50%;
+      top: -150px;
+      left: -150px;
+      animation: float 6s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(14,165,233,0.2), transparent 70%);
+      border-radius: 50%;
+      bottom: -150px;
+      right: -150px;
+      animation: float 8s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Keyframes */
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes float {
+      from { transform: translateY(0px); }
+      to { transform: translateY(40px); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Welcome to C-Mentor!</h1>
+    <p class="tagline">Empowering students to support students</p>
+
+    <h2>Accelerate with the<br>Mentorship Programme</h2>
+
+    <div class="buttons">
+      <a href="#" class="btn btn-primary">Become a Mentor</a>
+      <a href="#" class="btn btn-outline">Become a Mentee</a>
+    </div>
+  </div>
+</body>
+</html>

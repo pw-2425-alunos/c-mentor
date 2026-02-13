@@ -2,70 +2,115 @@
 
 {% block style %}
 
-* { box-sizing: border-box;}
+/* Reset */
+* { box-sizing: border-box; }
 
 main {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
-    justify-contents: center;
-    background: #BEC3C6;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    font-family: 'Roboto', sans-serif;
+    animation: fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 form {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 25ch;
+    margin-top: 2rem;
 }
 
 input, button {
     display: block;
-    padding:5px 10px;
-    margin: 5px;
-
-    width: 25ch;
+    padding: 8px 12px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
 }
 
-input[type='submit'], button {
-    color: white;
-    background: green;
-    transition: background-color 0.3s, filter 0.3s; /* Smooth transition */
-    font-size: 0.85rem;
-    padding: .375rem .75rem;
-    line-height: 1.5;
-    border-radius: .25rem;
+input[type='text'],
+input[type='password'] {
+    background-color: rgba(255,255,255,0.9);
+    color: #000;
 }
 
-input[type='submit']:hover, button:hover {
-    filter: brightness(85%); /* Reduce brightness by 15% to make the color darker */
+input[type='submit'] {
+    background-color: #ff7300;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-input[type='submit']:active, button:active {
-    filter: brightness(70%);
+input[type='submit']:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
 button {
+    background-color: #ff7300;
     color: black;
-    border: 1px solid grey; // #ffc107;
-    background: lightgrey; // #ffc107;
-  //  width: 100%;
+    border: 1px solid #ff7300;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
 a {
-    color: gray;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
+    color: #ff7300;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+    font-size: 0.95rem;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 1rem;
+    animation: slideUp 1s ease forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+p {
+    margin-top: 2rem;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: #eee;
 }
 
 {% endblock style %}
 
-
-
 {% block main %}
-
-<body style="background-color: #BEC3C6;">
 
 <h1>Login</h1>
 
@@ -75,22 +120,17 @@ a {
 
 <form action="{% url 'horarios:login' %}" method="POST">
     {% csrf_token %}
-    <input type="text" name="credential" placeholder="username ou email">
-    <input type="password" name="password" placeholder="palavra-passe">
-    <input type="submit" value="Entrar">
+    <input type="text" name="credential" placeholder="username or email">
+    <input type="password" name="password" placeholder="password">
+    <input type="submit" value="Login">
 </form>
 
- <a style = "font-size:1em; font-weight:bold; margin-top:4ch; color: #b5073d; text-decoration:none;" href="{% url 'horarios:fogot_password' %}">
-        <button>Recuperar Password</button>
-      <button>Primeira vez que acede</button>
-    </a>
+<div style="display:flex; flex-direction:column; gap:10px; width:25ch;">
+    <a href="{% url 'horarios:fogot_password' %}"><button style="background:none; border: solid 1px #ff7300; color:#ff7300;">Retrieve password</button></a>
+</div>
 
-<p style="text-align:center; margin-top:2em; font-style:italic; font-weight:400;">
-    Perante qualquer dificuldade <a style = "font-size:1em; color: green;" href="mailto:lucio.studer@ulusofona.pt">contacte-nos</a>.
-    </p>
-
-</body>
+<p>
+    In case of difficulties to login <a href="mailto:lucio.studer@ulusofona.pt" style="margin:none; display:inline;">contact us</a>.
+</p>
 
 {% endblock main %}
-
-

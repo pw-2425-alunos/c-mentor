@@ -110,12 +110,19 @@ h1,h2,h3 {color:white;}
 
 <body style="background-color: #b5073d;">
 
-<h2>Mentorando {{ request.user.first_name }} {{ request.user.last_name }}</h2>
+{% if gestor %}
+
+<h1 style="margin-bottom:-10px;">Mentees</h1>
+<p style="color:white;">And their disciplines</p>
+
+{% else %}
+<h2 style="margin-bottom:-10px;">Mentee: {{ request.user.first_name }} {{ request.user.last_name }}</h2>
 
 {% if vazio == 0 %}
-    <p style="color:white;">Não está a ter apoio a nenhuma disciplina</p>
+    <p style="color:white;">Not receiving mentorship in any discipline</p>
 {% else %}
-    <p style="color:white;">Disciplinas em que está a ter apoio de mentoria</p>
+    <p style="color:white;">Disciplines receiving mentorship</p>
+{% endif %}
 {% endif %}
 
 {% if aluno == "admin" %}
@@ -149,7 +156,7 @@ h1,h2,h3 {color:white;}
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <a style="text-decoration: none;"  href="{% url 'perfil' mentorandia.mentor.aluno.id %}">{{ mentorandia.mentor.aluno }}</a>
                                 <a class="sessão" style="margin-left: auto;" href="{% url 'sessoes' mentorandia.mentor.id  mentorandia.mentorando.id 1 %}">Sessões</a>
-                                <a class="elimina" style="margin-right: 10px; background-color: green;color:white;" href="{% url 'remover_mentorando' mentorandia.mentorando.id %}">Ativar</a>
+                                <a class="elimina" style="margin-right: 10px; background-color: #a34d06;color:white;" href="{% url 'remover_mentorando' mentorandia.mentorando.id %}">Ativar</a>
                                 </div>
                             {% else %}
                                 <br>
@@ -195,33 +202,11 @@ h1,h2,h3 {color:white;}
                         {% endfor %}
                     </select>
 
-                    <input class= "sessão" style="width: 100%; background:#28a745; color:white;" type="submit" value="+Adicionar">
+                    <input class= "sessão" style="width: 100%; background:#a34d06; color:white;" type="submit" value="+Adicionar">
 
                 </form>
             </div>
 
-    <p style="margin-top:50px; color:white;">Mentores e quantos mentorandos acompanham (díades)</p>
-    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
-        {% load custom_filters %}
-    <table>
-        <thead>
-            <tr>
-                <th>Disciplina</th>
-                <th>Mentor</th>
-                <th># Diades</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for m in mentorias %}
-                <tr>
-                    <td>{{ m.disciplina }}</td>
-                    <td><a href="{% url 'perfil' m.aluno.id %}">{{ m.aluno|first_last_name }}</a></td>
-                    <td style="text-align:center;">{{ m.diades_mentor.count }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    </div>
 
 {% endif %}
 </body>

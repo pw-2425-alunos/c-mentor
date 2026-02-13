@@ -73,7 +73,7 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 <body style="background-color: #b5073d;">
 
     <h1 style="text-align: center;">
-        Sessão de {{ sessao.diade.mentor.disciplina }}
+        Session {{ sessao.diade.mentor.disciplina }}
         </h1>
 
 
@@ -82,13 +82,13 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
             ; border: 1px solid black;
             "
     >
-    <h3>Por favor avalie a sessão</h3>
+    <h3>Please evaluate the session</h3>
     <form method="post">
         {% csrf_token %}
 
         <input type="number" id="id_avaliacao_mentorando" name="avaliacao_mentorando" min="1" max="5" required>
 
-        <button type="submit">Gravar</button>
+        <button type="submit">Save</button>
     </form>
     </div>
 

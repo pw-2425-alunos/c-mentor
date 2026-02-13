@@ -88,26 +88,25 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 
 
 
-<h2>Lista de Sessões</h2>
+<h2>List of Sessions</h2>
 
-<p style="padding:10px; border-radius:10px; background:white; text-align: center;">O atributo <b>reportado</b> indica se a sessão foi reportada pela secretaria para desconto nas propinas.</p>
+<p style="padding:10px; border-radius:10px; background:white; text-align: center;">Note: <b>Reported</b> attribute indicates if the session was reported by the secretariat for tuition fee discount.</p>
 
     {% if user.is_superuser and filtro == 'n' %}
         <a class="sessão" href="{% url 'por_reportar' %}" style="float: right; margin-right: 10px; padding:10px; border-radius:10px; background: #f9ed69;">
-            Mostrar sessões por reportar
+            Show sessions not yet reported
         </a>
     {% elif user.is_superuser and filtro == 'r' %}
         <a class="sessão" href="{% url 'all_sessoes' %}" style="float: right; margin-right: 10px; padding:10px; border-radius:10px;  background: #f9ed69;">
-            Mostrar todas as sessões
+            Show all sessions
         </a>
     {% endif %}
 
 
 {% for mentor_info in sessoes_por_mentor_lista %}
 
-<h2 style="margin-top:8ch;">
-    {{ mentor_info.mentor }} ({{ mentor_info.mentor.numero }}, ({{ mentor_info.mentor.curso|slice:"1:" }}): {{ mentor_info.total_sessoes_nao_reportadas }} sessões por reportar / {{ mentor_info.total_sessoes }} realizadas
-</h2>
+<h2 style="margin-top:8ch;">{{ mentor_info.mentor }} (({{ mentor_info.mentor.curso|slice:"1:" }})</h2>
+<p style="margin-top:-10px; color:white;">{{ mentor_info.total_sessoes }} sessions concluded / {{ mentor_info.total_sessoes_nao_reportadas }} sessions not yet reported to administration </p>
 
 
     <div class="disciplina"
@@ -118,11 +117,11 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
         <table style="width: 100%; text-align: center;border-collapse: collapse;" align="center" border="2px solid black">
             <thead>
                 <tr>
-                    <th>Sessão</th>
-                    <th>Mentorando</th>
-                    <th>Data</th>
-                    <th>Realizada</th>
-                    <th></th>
+                    <th>Session</th>
+                    <th>Mentee</th>
+                    <th>Date</th>
+                    <th style="text-align:center;">Concluded</th>
+                    <th style="text-align:center;">Reported</th>
                 </tr>
             </thead>
             <tbody>
@@ -132,17 +131,19 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
                     <td> {{ sessao.diade.mentorando.aluno }} </td>
                     <td> {{ sessao.data|date:"d.m.y H:i" }} </td>
                     {% if sessao.confirmado == True%}
-                    <td> ✔ </td>
+                    <td style="text-align:center;"> <i class="fa-solid fa-check"></i> </td>
                     {% else %}
-                    <td> ❌ </td>
+                    <td style="text-align:center;"> <i class="fa-solid fa-xmark"></i> </td>
                     {% endif %}
                     {% if sessao.confirmado == False %}
-                        <td>  </td>
+                    <td style="text-align:center;"> <i class="fa-solid fa-xmark"></i></td>
+                    <td style="text-align:center;"> <i class="fa-solid fa-xmark"></i></td>
+                    
                     {% else %}
                         {% if sessao.reportado == True %}
-                        <td> Sessão reportada ✔ </td>
+                        <td style="text-align:center;"> <i class="fa-solid fa-check"></i> </td>
                         {% else %}
-                        <td> Sessão por reportar </td>
+                        <td style="text-align:center;"> <i class="fa-solid fa-xmark"></i></td>
                         {% endif %}
                     {% endif %}
                 </tr>
@@ -151,7 +152,7 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
         </table>
         {% if user.is_superuser %}
             <p><a class="sessão" href="{% url 'report_sessoes_mentor' mentor_info.mentor.id %}" style="float: right; margin-right: 10px;">
-                Reportar Sessões
+                Report Sessions
             </a></p>
         {% endif %}
     </div>

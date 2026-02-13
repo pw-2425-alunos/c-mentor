@@ -96,10 +96,10 @@ body {
 
 <body style="background-color: #b5073d;">
 
-    <h2>Registo de Sessão</h2>
+    <h2>Session Registration</h2>
 
     <div class="disciplina" style="padding:20px;">
-        <h3  style="color:black;">Mentoria de {{ diade.mentor.disciplina }}</h3>
+        <h3  style="color:black;">Mentorship of {{ diade.mentor.disciplina }}</h3>
 
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -107,12 +107,12 @@ body {
 
 
 
-            <input type="submit" class="sessão" style="background:#28a745; color:white; padding-left:20px; padding-right:20px; float: right; margin-right: -5px;" value="Gravar">
+            <input type="submit" class="sessão" style="background:#28a745; color:white; padding-left:20px; padding-right:20px; float: right; margin-right: -5px;" value="Save">
         </form>
 
     </div>
 
-<a href="{% url 'mentores' %}" class="sessão">⏎ Voltar</a>
+<a href="{% url 'mentores' %}" class="sessão">Return</a>
 
 </body>
 

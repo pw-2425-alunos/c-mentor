@@ -20,7 +20,7 @@ import locale
 matplotlib.use('Agg')
 
 
-semestre = 2
+semestre = 1
 
 
 
@@ -160,6 +160,11 @@ def mentores_view(request):
         'ano': ano,
         'semestre': semestre
     }
+
+    if request.user.groups.filter(name="Gestores").exists():
+        context['gestor'] = True
+    else:
+        context['gestor'] = False
 
     return render(request, 'mentoria/mentores_diades.html', context)
 
@@ -364,6 +369,9 @@ def mentorandos_view(request):
         disciplina__semestre=semestre
     ).select_related('disciplina').order_by('disciplina__nome')
 
+
+        
+
     context = {
         'ano': ano,
         'mentorandos_info': mentorandos_info,
@@ -373,6 +381,11 @@ def mentorandos_view(request):
         'mentorias': mentorias,
         'semestre': semestre,
     }
+    
+    if request.user.groups.filter(name="Gestores").exists():
+        context['gestor'] = True
+    else:
+        context['gestor'] = False
 
     return render(request, 'mentoria/mentorandos.html', context)
 

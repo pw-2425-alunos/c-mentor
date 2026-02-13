@@ -108,7 +108,7 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 <body style="background-color: #b5073d;">
 
     <h1 style="text-align: center;">
-        Sessão de {{ sessao.diade.mentor.disciplina }}
+        Session of {{ sessao.diade.mentor.disciplina }}
         </h1>
 
 
@@ -118,43 +118,43 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
             padding: 20px;
             "
     >
-            <b>Data e hora:</b> {{ sessao.data }}
+            <b>Date and time:</b> {{ sessao.data }}
             <br>
             <br>
             <b>Mentor:</b>
                 <a class="azul" style="text-decoration: none;" href="{% url 'perfil' sessao.diade.mentor.aluno.id %}" target="_blank">{{ sessao.diade.mentor.aluno }}</a>
             <br>
             <br>
-            <b>Mentorando: </b>
+            <b>Mentee: </b>
                 <a class="azul" style="text-decoration: none;" href="{% url 'perfil' sessao.diade.mentorando.aluno.id %}" target="_blank">{{ sessao.diade.mentorando.aluno }}</a>
             <br>
             <br>
-            <b>Sumário: </b> {{ sessao.sumario }}
+            <b>Summary: </b> {{ sessao.sumario }}
             <br>
             <br>
-            <b>Objetivos da sessão:</b> {{ sessao.objetivo }}
+            <b>Session objectives:</b> {{ sessao.objetivo }}
             <br>
             <br>
-            <b>Recursos Utilizados:</b> {{ sessao.recursos }}
+            <b>Resources:</b> {{ sessao.recursos }}
             <br>
             <br>
-            <b>Avaliação do trabalho realizado:</b> <b>Mentor:</b> {{ sessao.avaliacao_mentor }} <b> / Mentorando:</b> {{ sessao.avaliacao_mentorando }}
+            <b>Evaluation of the session:</b> <b>Mentor:</b> {{ sessao.avaliacao_mentor }} <b> / Mentee:</b> {{ sessao.avaliacao_mentorando }}
             <br>
             <br>
-            <b>Observações/Dificuldades encontradas:</b> {{ sessao.observacoes }}
+            <b>Observations/Dificulties:</b> {{ sessao.observacoes }}
             <br>
             <br>
-            <b>Planificação da sessão seguinte:</b> {{ sessao.planificacao_proxima_sessao }}
+            <b>Tasks for next session:</b> {{ sessao.planificacao_proxima_sessao }}
             <br>
             <br>
             {% if sessao.confirmado == False %}
-            <span style="color: red;"><b>Nota:</b> Sessão por confirmar por parte do mentorando </span>
+            <span style="color: red;"><b>Note:</b> Session to be confirmed by the mentee </span>
             {% else %}
-            <b style="color: green;"> Sessão confirmada ✅</b>
+            <b style="color: green;"> Session confirmed ✅</b>
             {% endif %}
     </div>
 
-    <a href="{% url 'mentores' %}" class="sessão" style="background:#28a745; color:white;">⏎ Voltar</a>
+    <a href="{% url 'mentores' %}" class="sessão" style="background:#28a745; color:white;"> Return</a>
 
 </body>
 

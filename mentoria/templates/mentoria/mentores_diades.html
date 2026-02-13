@@ -60,8 +60,8 @@ body {
 
 .azul {
     text-decoration: none;
-    color: #007bff;
-    border: 1px solid #007bff;
+    color: #a34d06;
+    border: 1px solid #a34d06;
 
     margin: 5px 0;
     font-size: 0.85rem;
@@ -74,8 +74,8 @@ body {
 }
 .azul:hover {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #a34d06;
+    border-color: #a34d06;
 }
 
 div.disciplina {
@@ -92,13 +92,21 @@ h1,h2,h3 {color:white;}
 
 <body style="background-color: #b5073d;">
 
-    <h2>Mentor {{ request.user.first_name }} {{ request.user.last_name }}</h2>
+    
+{% if gestor %}
 
+<h1 style="margin-bottom:-10px;">Mentors</h1>
+<p style="color:white;">And their mentees</p>
+
+{% else %}
+
+<h1>Mentor: {{ request.user.first_name }} {{ request.user.last_name }}</h1>
+
+{% endif %}
 
 {% for aluno, mentorias, disciplinas_nao_mentorizadas, mentorandos_potenciais_sem_diade in alunos %}
-    {% if alunos|length > 1 %}<h1>{{ mentorias.0.aluno }}</h1>{% endif %}
-    <h3>Mentorias</h3>
-
+    {% if alunos|length > 1 %}<h2>Mentor: {{ mentorias.0.aluno }}</h2>{% endif %}
+    
     {% for mentor in mentorias %}
 
         {% if mentor.diades_mentor.exists %}
@@ -107,15 +115,15 @@ h1,h2,h3 {color:white;}
                 <b>{{ mentor.disciplina }}</b>
                 {% for diade in mentor.diades_mentor.all %}
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <a class="azul" href="{% url 'perfil' diade.mentorando.aluno.id %}">{{ diade.mentorando.aluno }}</a>
+                        <a class="azul" href="{% url 'perfil' diade.mentorando.aluno.id %}">Mentee: {{ diade.mentorando.aluno }}</a>
 
                         {% if diade.sessoes.count > 0 %}
-                            <a class="sessão" style="margin-left: auto;" href="{% url 'sessoes' diade.mentor.id  diade.mentorando.id 0 %}">Ver {{ diade.sessoes.count }} sessões</a>
+                            <a class="sessão" style="margin-left: auto;" href="{% url 'sessoes' diade.mentor.id  diade.mentorando.id 0 %}">See {{ diade.sessoes.count }} sessions</a>
                         {% endif %}
                         {% if diade.ativo == False %}
-                            <b style="color: grey; {% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %}">(Suspensa)</b>
+                            <b style="color: grey; {% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %}">(Suspended)</b>
                         {% else %}
-                             <a class="sessão"  style="{% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %} background:#28a745; color:white;" href="{% url 'criar_sessao' diade.id %}">Nova sessão</a>
+                             <a class="sessão"  style="{% if diade.sessoes.count == 0 %}margin-left: auto;{% endif %} background:#a34d06; color:white;" href="{% url 'criar_sessao' diade.id %}">New Session</a>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -124,33 +132,33 @@ h1,h2,h3 {color:white;}
         {% else %}
             <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
                 <b>{{ mentor.disciplina }}</b>
-                <div style="color: red; ">Sem mentorando</div>
+                <div style="color: red; ">Without Mentee</div>
             </div>
         {% endif %}
     {% endfor %}
 
-    <h3>Adicionar Mentorando</h3>
+    <h3>Add Mentee</h3>
     <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
         <form action="{% url 'cria_diade' %}" method='POST'>
 
             {% csrf_token %}
 
             <input type="hidden" name="mentor_aluno_id"  value="{{ aluno }}" >
-
+ 
             <select name = 'mentorando_id' style="padding:.375rem; width:100%; margin-bottom: 5px;"required>
-                <option value="">Selecione alunos que precisam de mentoria</option>
+                <option value="">Select mentee</option>
                 {% for candidato in mentorandos_potenciais_sem_diade %}
                            <option value = "{{ candidato.id }}"> {{ candidato.disciplina }}: {{ candidato.aluno }} </option>
                 {% endfor %}
             </select>
 
-            <input class = "sessão" style="width: 100%; background:#28a745; color:white;" type="submit" value="+Adicionar">
+            <input class = "sessão" style="width: 100%; background:#a34d06; color:white;" type="submit" value="+Add">
 
         </form>
     </div>
 
-    <h3>Adicionar disciplina</h3>
-    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;">
+    <h3>Add Lecture</h3>
+    <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black; margin-bottom:60px;">
         <form action="{% url 'cria_mentor' %}" method='POST'>
 
             {% csrf_token %}
@@ -158,22 +166,24 @@ h1,h2,h3 {color:white;}
             <input type="hidden" name="mentor_aluno_id"  value="{{ aluno }}" >
 
             <select name = 'disciplina_id' style="padding:.375rem; width:100%; margin-bottom: 5px;" required>
-                <option value="">Selecione disciplinas para ser mentor</option>
+                <option value="">Select lecture to be mentor of</option>
                 {% for disciplina in disciplinas_nao_mentorizadas %}
-                        <option value = "{{ disciplina.id }}"> {{ disciplina.nome }} ({{ disciplina.ano }}A/{{ disciplina.semestre }}S)</option>
+                        <option value = "{{ disciplina.id }}"> {{ disciplina.nome }}</option>
                 {% endfor %}
             </select>
 
-            <input class= "sessão" style="width: 100%; background:#28a745; color:white;" type="submit" value="+Adicionar">
+            <input class= "sessão" style="width: 100%; background:#a34d06; color:white;" type="submit" value="+Add">
 
         </form>
     </div>
 
 {% endfor %}
 
-    <h3>Alunos sem mentor</h3>
+
+
+<h3>Mentees without Mentor</h3>
     <p style="margin-top: 0;font-size: 0.90rem; color: white;text-align: center;">
-        Para ser mentor de algum destes alunos, registe-se como mentor da disciplina. O mentorando aparecerá na lista para adicionar mentorando
+        To be mentor of some of these mentees, register as mentor of a lecture. The mentee will appear in the list to be added as mentee.
     </p>
     <div class="disciplina" style="background-color: whitesmoke; border: 1px solid black;" required>
        <ul>

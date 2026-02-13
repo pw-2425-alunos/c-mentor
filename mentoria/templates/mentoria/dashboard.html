@@ -128,13 +128,13 @@ th, details {
     <table border=1>
         <tr>
             <td style="text-align:left;">
-                <b>{{ alunos_mentores|length }} Mentores</b><br>
-                Disponiveis para {{ mentores|length }} mentorias em diferentes disciplinas.<br>
-                Existem {{diades|length}} díades, existindo ainda {{ mentores_sem_diade|length }} disponiveis.<br>
+                <b>{{ alunos_mentores|length }} Mentors</b><br>
+                Available for {{ mentores|length }} mentorships in different disciplines.<br>
+                There are {{diades|length}} diades, and {{ mentores_sem_diade|length }} are still available.<br>
             </td>
             <td>
                 <details>
-                    <summary>Alunos mentores</summary>
+                    <summary>Mentors</summary>
                     <ol>{% for m in alunos_mentores %} <li>{{ m }}</li> {% endfor %}</ol>
                 </details>
             </td>
@@ -143,43 +143,43 @@ th, details {
 
         <tr>
             <td style="text-align:left;">
-                <b>{{ alunos_mentorandos|length }} Mentorandos</b><br>
-                Precisam {{ mentorandos|length }} díades (alguns alunos pedem apoio em várias disciplinas).<br>
-                Existem {{diades|length}} díades, faltam {{ mentorandos_sem_diade|length }}.<br>
+                <b>{{ alunos_mentorandos|length }} Mentees</b><br>
+                Need {{ mentorandos|length }} diades (some students ask for support in several disciplines).<br>
+                There are {{diades|length}} diades, and {{ mentorandos_sem_diade|length }} are still missing.<br>
             </td>
             <td>
                 <details>
-                    <summary>Alunos mentorandos</summary>
+                    <summary>Mentees</summary>
                     <ol>{% for m in alunos_mentorandos %} <li>{{ m }}</li> {% endfor %}</ol>
                 </details>
             </td>
         </tr>
 
         <tr>
-            <th>{{ disciplinas_com_mentoria|length }} disciplinas com mentoria</th>
+            <th>{{ disciplinas_com_mentoria|length }} disciplines with mentorship</th>
             <td >
                 <details>
-                    <summary>Disciplinas com mentoria</summary>
+                    <summary>Disciplines with mentorship</summary>
                     <ol>{% for d in disciplinas_com_mentoria %} <li>{{ d }}</li> {% endfor %}</ol>
                 </details>
             </td>
         </tr>
         <tr>
-            <th>{{ disciplinas_em_falta|length }} disciplinas com alunos sem mentor</th>
+            <th>{{ disciplinas_em_falta|length }} disciplines with students without mentor</th>
 
             <td >
                 <details>
-                    <summary>Disciplinas que precisam mentores</summary>
+                    <summary>Disciplines without mentorship</summary>
                     <ol>{% for d in disciplinas_em_falta %} <li>{{ d }}</li> {% endfor %}</ol>
                 </details>
             </td>
         </tr>
 
         <tr>
-            <th class="azul">{{ mentorandos_sem_diade|length }} mentorandos sem mentoria</th>
+            <th class="azul">{{ mentorandos_sem_diade|length }} mentees without mentorship</th>
             <td >
                 <details>
-                    <summary class="azul">Mentorandos sem mentoria</summary>
+                    <summary class="azul">Mentees without mentorship</summary>
                     <ol>{% for m in mentorandos_sem_diade %} <li><b>{{ m.disciplina }}</b>: {{ m.aluno }}</li> {% endfor %}</ol>
                 </details>
             </td>
@@ -188,11 +188,11 @@ th, details {
         <tr>
             <td colspan="2">
                 <details>
-                    <summary><b>Sessões por mentorando</b></summary>
+                    <summary><b>Sessions by mentee</b></summary>
                     <ol>
                         {% for disciplina, mentorandos_disciplina in mentorandos %}
                         <li><b>{{ disciplina }}</b>
-                            <ul>{% for m in mentorandos_disciplina %} <li><b>{{ m.sessoes }} sessoes</b>: {{ m.nome }} ({{ m.numero }}), mentor: {{ m.mentor }} </li> {% endfor %}</ul>
+                            <ul>{% for m in mentorandos_disciplina %} <li><b>{{ m.sessoes }} sessions</b>: {{ m.nome }} ({{ m.numero }}), mentor: {{ m.mentor }} </li> {% endfor %}</ul>
                         </li>
                         {% endfor %}
                     </ol>
@@ -206,7 +206,7 @@ th, details {
 
 
 
-    <h2>Nº de Sessões por mês</h2>
+    <h2>Sessions per month</h2>
     <p><img src="data:image/png;base64,{{ data }}" alt=""></p>
 
 

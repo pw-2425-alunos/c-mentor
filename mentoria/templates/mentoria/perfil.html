@@ -79,7 +79,7 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 
 <body style="background-color: #b5073d;">
 
-<h1>Perfil de {{ aluno.user.first_name }} </h1>
+<h1>{{ aluno.user.first_name }} {{ aluno.user.last_name }}</h1>
 
 
     <div class="disciplina"
@@ -88,11 +88,10 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
             "
     >
         <ul>
-            <p><b>Nome:</b> {{ aluno }}</p>
-            <p><b>Número:</b> {{ aluno.numero }}</p>
-            <p><b>Curso:</b> {{ aluno.curso }}</p>
-            {% if aluno.ano %} <p><b>Ano:</b> {{ aluno.ano }}</p> {% endif %}
-            <p><b>Email: </b><a href="mailto:{{ aluno.user.email }}">{{ aluno.user.email }}</a></p>
+            <p><b>Course:</b> {{ aluno.curso }}</p>
+            {% if aluno.ano %} <p><b>Year:</b> {{ aluno.ano }}</p> {% endif %}
+            <p><b>Number:</b> {{ aluno.numero }}</p>
+            <p><b>E-mail: </b><a href="mailto:{{ aluno.user.email }}">{{ aluno.user.email }}</a></p>
         </ul>
     </div>
 

@@ -104,9 +104,9 @@ body {
 
 
 
-    <h3>Sessões</h3>
+    <h3>Session</h3>
 
-    <h4> Mentoria de {{ diade.mentor.disciplina }}</h4>
+    <h4> Mentorship of {{ diade.mentor.disciplina }}</h4>
 
     <div class="disciplina" style="padding:20px;">
 
@@ -117,13 +117,13 @@ body {
 
 
             <a class="sessão" href="{% url 'apaga' sessao_id %}" style="float: left; margin-left: 10px; color: red; border: 1px solid red;">
-                Apagar
+                Delete
             </a>
             <a class="sessão" href="{% url 'sessoes' diade.mentor.id diade.mentorando.id 0 %}" style="float: left; margin-left: 10px;">
-                Cancelar
+                Cancel
             </a>
 
-            <input type="submit" class="sessão" style="background:#28a745; color:white; padding-left:20px; padding-right:20px; float: right; margin-right: -5px;" value="Gravar">
+            <input type="submit" class="sessão" style="background:#28a745; color:white; padding-left:20px; padding-right:20px; float: right; margin-right: -5px;" value="Save">
 
         </form>
 

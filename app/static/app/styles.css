@@ -5,7 +5,7 @@ body {
 }
 
 header {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.758);
     color: white;
     padding: 2.5px 20px;
     display: flex;
@@ -35,7 +35,6 @@ header nav a:hover {
 
 main {
     padding: 50px 20px;
-    max-width: 500px;
     margin:auto;
 }
 .helptext {
