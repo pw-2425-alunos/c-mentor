@@ -3,6 +3,10 @@
 
 The C-Mentor Network is a web application running at [https://c-mentor.pw.deisi.ulusofona.pt/](https://c-mentor.pw.deisi.ulusofona.pt/) on a university server. 
 
+## Demo video
+
+https://www.youtube.com/watch?v=XyFhcnkrElM
+
 ## How it works
 
 The platform manages mentoring sessions between students, with three types of users:
