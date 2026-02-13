@@ -274,7 +274,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('horarios:index')
+    return redirect('info')
 
 
 def forgot_password(request):
