@@ -1,22 +1,22 @@
 {% extends "app/base.html" %}
 
-<main>
-    <button onclick="window.history.back()" style="margin-bottom: 20px; padding: 8px 18px; border-radius: 20px; border: none; background: #ff7300; color: black; font-weight: bold; cursor: pointer; font-size: 1rem; transition: background 0.2s;">&larr; Voltar</button>
+{% block style %}
 
-    <h1>{{ aluno.user.first_name }} {{ aluno.user.last_name }}</h1>
+/* --- Corpo e main --- */
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
 
-    <div class="disciplina">
-        <p><b>Course:</b> {{ aluno.curso }}</p>
-        {% if aluno.ano %}
-            <p><b>Year:</b> {{ aluno.ano }}</p>
-        {% endif %}
-        <p><b>Number:</b> {{ aluno.numero }}</p>
-        <p>
-            <b>E-mail:</b>
-            <a class="email-link" href="mailto:{{ aluno.user.email }}">{{ aluno.user.email }}</a>
-        </p>
-    </div>
-</main>
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,6 +95,7 @@ b {
         <a class="email-link" href="mailto:{{ aluno.user.email }}">{{ aluno.user.email }}</a>
     </p>
 </div>
+
 </main>
 
 {% endblock main %}
