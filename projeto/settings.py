@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-%1ar)i&68#4bb$j24axv0l+dwbe0rpdu#b)#b--3h^v-w*yyir
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['c-mentor.pw.deisi.ulusofona.pt/', 'cmentor.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
+ALLOWED_HOSTS = ['c-mentor.pw.deisi.ulusofona.pt', 'cmentor.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
 
-CSRF_TRUSTED_ORIGINS = ['http://mentorias.local', 'https://mentorias.local']
+CSRF_TRUSTED_ORIGINS = ['https://c-mentor.pw.deisi.ulusofona.pt']
 
 # Application definition
 
@@ -138,12 +138,11 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-RUN_ENV = os.getenv("RUN_ENV", "PA")   # "PA" (default) ou "CLUSTER"
+# RUN_ENV = os.getenv("RUN_ENV", "PA")   # "PA" (default) ou "CLUSTER"
+# DEBUG = os.getenv("DEBUG", "1" if RUN_ENV=="PA" else "0") == "1"
+# RUN_ENV = os.getenv("RUN_ENV", "LOCAL")   # LOCAL | PA | CLUSTER
 
-DEBUG = os.getenv("DEBUG", "1" if RUN_ENV=="PA" else "0") == "1"
-
-RUN_ENV = os.getenv("RUN_ENV", "LOCAL")   # LOCAL | PA | CLUSTER
-
+DEBUG = True
 RUN_ENV = 'LOCAL'
 
 if RUN_ENV == "PA":
@@ -184,23 +183,22 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    MEDIA_ROOT = BASE_DIR / 'media'
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'), 
+    ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'), 
-]
-
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
 
 
 # Password validation
