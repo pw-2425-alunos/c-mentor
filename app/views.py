@@ -282,12 +282,12 @@ def forgot_password(request):
   email = request.POST.get('email')
 
   if not email:
-    return render(request, 'app/forgot.html', {'error': 'Insira o seu email onde recebe as mensagens do Moodle da Lusófona.'})
+    return render(request, 'app/forgot.html', {'error': 'Insert the email where you receive information from your University.'})
 
   user = User.objects.filter(email=email).first()
 
   if not user:
-    return render(request, 'app/forgot.html', {'error': 'O email inserido não está registado. Se for aluno do DEISI contacte lucio.studer@ulusofona.pt, enviando o seu nome completo, número de aluno, curso e ano, para ser registado na plataforma.'})
+    return render(request, 'app/forgot.html', {'error': 'The email you entered is not registered. Contact <a href="mailto:pweb.profs@gmail.com">pweb.profs@gmail.com</a>, sending your full name, student number, course and institution, so that you can be registered on the platform.'})
 
   token = token = default_token_generator.make_token(user)
   uidb64 = urlsafe_base64_encode(user.pk.to_bytes(4, 'big'))
@@ -295,13 +295,13 @@ def forgot_password(request):
   reset_link = request.build_absolute_uri(f'/geral/reset/{uidb64}/{token}/')
 
   send_mail(
-        'Definição de palavra chave',
-        f'Olá,\n\nPediu para redefinir a sua palavra chave, clique por favor no seguinte link:\n\n{reset_link}',
-        'lucio.studer@gmail.com',
+        'Password reset',
+        f'Hello,\n\nYou requested a password reset, please click on the following link:\n\n{reset_link}',
+        'pweb.profs@gmail.com',
         [email]
   )
 
-  return render(request, 'app/forgot.html', {'success': 'Foi-lhe enviado um email com um link para redefinir a sua senha.'})
+  return render(request, 'app/forgot.html', {'success': 'An email was sent with a link to reset your password.'})
 
 
 

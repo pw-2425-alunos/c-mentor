@@ -108,6 +108,29 @@ p {
     color: #eee;
 }
 
+
+
+.secondary-btn {
+    display: block;
+    width: 100%;
+    max-width: 25ch;
+    margin: 2rem auto 0 auto;
+    padding: 10px 0;
+    background: transparent;
+    color: #ff7300;
+    border: 2px solid #ff7300;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+    box-sizing: border-box;
+}
+.secondary-btn:hover {
+    background: #ff7300;
+    color: #fff;
+}
+
 {% endblock style %}
 
 {% block main %}
@@ -130,7 +153,9 @@ p {
 </div>
 
 <p>
-    In case of difficulties to login <a href="mailto:lucio.studer@ulusofona.pt" style="margin:none; display:inline;">contact us</a>.
+    In case of difficulties to login <a href="mailto:pweb.profs@gmail.com" style="margin:none; display:inline;">contact us</a>.
 </p>
+
+<a href="{% url 'info' %}" class="secondary-btn">Home</a>
 
 {% endblock main %}

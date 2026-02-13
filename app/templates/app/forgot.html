@@ -1,67 +1,153 @@
 {% extends 'app/base.html' %}
 
-
-
 {% block style %}
+
+/* Reset */
+* { box-sizing: border-box; }
 
 main {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
-    justify-contents: center;
-    background: #BEC3C6;
+    justify-content: center;
+    min-height: 100vh;
+
+    background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    font-family: 'Roboto', sans-serif;
+    animation: fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h1 {
+    font-size: 2.4em;
+    margin-bottom: 1.5rem;
+    animation: slideUp 1s ease forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 form {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
-    justify-contents: center;
-    max-width: 20ch;
+    justify-content: center;
+    width: 25ch;
+    margin-top: 1.5rem;
 }
 
 input {
     display: block;
-    padding:5px 10px;
-    margin: 5px;
-    border: 2px solid green;
+    padding: 8px 12px;
+    margin: 8px 0;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
 }
+
+input[type='email'] {
+    background-color: rgba(255,255,255,0.9);
+    color: #000;
+}
+
 input[type='submit'] {
-    color: white;
-    background: green;
-    width: 113%;
-    transition: background-color 0.3s, filter 0.3s; /* Smooth transition */
+    background-color: #ff7300;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 input[type='submit']:hover {
-    filter: brightness(85%); /* Reduce brightness by 15% to make the color darker */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+.message {
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+
+
+a {
+    color: #ff7300;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p {
+    margin-top: 2rem;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #eee;
+}
+
+.secondary-btn {
+    display: block;
+    width: 100%;
+    max-width: 25ch;
+    margin: 2rem auto 0 auto;
+    padding: 10px 0;
+    background: transparent;
+    color: #ff7300;
+    border: 2px solid #ff7300;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+    box-sizing: border-box;
+}
+.secondary-btn:hover {
+    background: #ff7300;
+    color: #fff;
 }
 
 {% endblock %}
 
 
 {% block main %}
-<body style="background-color: #BEC3C6;">
 
- <h1>Primeiro acesso à plataforma <br>ou recuperação de password</h1>
+<h1>Password Recovery</h1>
 
-    {% if success %}
+{% if success %}
+    <div class="message">
         {{ success }}
-    {% else %}
-        {% if error %}
-            {{ error }}
-        {% endif %}
+    </div>
+{% else %}
 
-        <form action="" method="post">
+    {% if error %}
+        <div class="message">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form action="" method="post">
         {% csrf_token %}
-        <br>
-        <input type="email" name="email" placeholder="Insira o email ..."/>
-        <input type="submit" value="Definir Password" />
+        <input type="email" name="email" placeholder="Enter your email">
+        <input type="submit" value="Request password reset">
     </form>
 
-    {% endif %}
-</body>
+{% endif %}
+
+<a href="{% url 'info' %}" class="secondary-btn">Home</a>
+
 
 {% endblock %}
+

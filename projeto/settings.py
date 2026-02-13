@@ -252,8 +252,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mentoriadeisi@gmail.com'
-EMAIL_HOST_PASSWORD = 'aqbs mqlr tiur jrad'  # usar uma google app password
+EMAIL_HOST_USER = 'pweb.profs@gmail.com'  
+EMAIL_HOST_PASSWORD = 'dhzw yqpl mnqe nohj' 
 
 LOGIN_URL = 'horarios:login'
 
