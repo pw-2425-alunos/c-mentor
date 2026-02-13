@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%1ar)i&68#4bb$j24axv0l+dwbe0rpdu#b)#b--3h^v-w*yyir
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cmentor.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
+ALLOWED_HOSTS = ['c-mentor.pw.deisi.ulusofona.pt/', 'cmentor.pythonanywhere.com', '127.0.0.1', 'localhost', 'mentorias.local']
 
 CSRF_TRUSTED_ORIGINS = ['http://mentorias.local', 'https://mentorias.local']
 
@@ -246,7 +246,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #MEDIA_ROOT = '/home/mentoriasDEISI/projeto/media'
 #MEDIA_URL = '/media/'
 #STATIC_ROOT = '/home/mentoriasDEISI/projeto/static'
-#STATIC_URL = '/static/'
+#STATIC_URL = 'static/'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
