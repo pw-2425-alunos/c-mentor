@@ -124,8 +124,7 @@ a.details-btn {
     border-radius: 30px;
     text-decoration: none;
     color: white;
-    border: 2px solid #ff7300;
-    background-color: transparent;
+    background-color: #ff7300;
     transition: all 0.3s ease;
 }
 
@@ -173,7 +172,7 @@ a.sessão.edit:hover, a.sessão.confirm:hover {
 <h3>Mentor: {{ mentor.aluno }} | Mentee: {{ mentorando.aluno }}</h3>
 
 {% if sep == 0 %}
-    <a class="sessão edit" href="{% url 'criar_sessao' diade.id %}" style="width:100%; text-align:center; margin-bottom:20px;">Create a new session</a>
+    <a class="sessão sumario" href="{% url 'criar_sessao' diade.id %}" style="width:100%; text-align:center; margin-bottom:20px;">Create a new session</a>
 {% endif %}
 
 {% for sessao in sessoes %}
@@ -190,17 +189,17 @@ a.sessão.edit:hover, a.sessão.confirm:hover {
 
         <!-- Data + Summary visíveis -->
         <h3>Session of {{ sessao.data|date:"d.m.Y, H:i" }}</h3>
-
+{% if not sessao.confirmado %}
+            <div style="font-weight: bold; margin-top:-10px; font-size:small;">
+                <b>Important:</b> The mentee must confirm this session on the platform.
+            </div>
+        {% endif %}
         <div class="sumario">
             <b>Summary:</b><br>
             {{ sessao.sumario }}
         </div>
 
-        {% if not sessao.confirmado %}
-            <div style="color: red; margin-top:10px; font-size:small;">
-                <b>Important:</b> The mentee must confirm this session on the platform.
-            </div>
-        {% endif %}
+        
 
         <!-- Botão Details que mostra/esconde todo o restante -->
         <a href="javascript:void(0);" class="details-btn"
@@ -209,8 +208,8 @@ a.sessão.edit:hover, a.sessão.confirm:hover {
         </a>
 
         <div class="detail-content">
-            <p><b>Mentor:</b> <a class="mentor-link" href="{% url 'perfil' sessao.diade.mentor.aluno.id %}" target="_blank">{{ sessao.diade.mentor.aluno }}</a></p>
-            <p><b>Mentee:</b> <a class="mentee-link" href="{% url 'perfil' sessao.diade.mentorando.aluno.id %}" target="_blank">{{ sessao.diade.mentorando.aluno }}</a></p>
+            <p><b>Mentor:</b> <a class="mentor-link" href="{% url 'perfil' sessao.diade.mentor.aluno.id %}">{{ sessao.diade.mentor.aluno }}</a></p>
+            <p><b>Mentee:</b> <a class="mentee-link" href="{% url 'perfil' sessao.diade.mentorando.aluno.id %}">{{ sessao.diade.mentorando.aluno }}</a></p>
             <p><b>Session Objectives:</b> {{ sessao.objetivo }}</p>
             <p><b>Resources:</b> {{ sessao.recursos }}</p>
             <p><b>Evaluation:</b> <b>Mentor:</b> {{ sessao.avaliacao_mentor }} <b>/ Mentee:</b> {{ sessao.avaliacao_mentorando }}</p>
