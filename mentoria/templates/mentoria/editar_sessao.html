@@ -71,6 +71,12 @@ form input:focus, form textarea:focus, form select:focus {
     border: 2px solid #ff7300;
 }
 
+input[type="range"] + span {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
 /* --- Buttons --- */
 a.sessão, input.sessão {
     display: inline-block;
@@ -84,7 +90,6 @@ a.sessão, input.sessão {
     text-align: center;
 }
 
-/* Save button */
 input.sessão {
     background-color: #ff7300;
     color: black;
@@ -99,7 +104,6 @@ input.sessão:hover {
     box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
-/* Cancel/Delete buttons */
 a.sessão.cancel, a.sessão.delete {
     background-color: #ff7300;
     color: black;
@@ -113,7 +117,6 @@ a.sessão.cancel:hover, a.sessão.delete:hover {
     box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
-/* Positioning top buttons */
 .actions {
     display: flex;
     justify-content: flex-start;
@@ -139,9 +142,49 @@ a.sessão.cancel:hover, a.sessão.delete:hover {
 
     <form action="{% url 'edita' sessao_id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+
         <div class="Form">
-            {{ form.as_p }}
+            {# Renderiza todos os campos exceto os de avaliação #}
+            {% for field in form %}
+                {% if field.name != "avaliacao_mentor" and field.name != "avaliacao_mentorando" %}
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <span style="color:red">{{ error }}</span>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+
+            {# Avaliação do mentor com slider #}
+            <p>
+                <label for="id_avaliacao_mentor">Evaluation of the session by the mentor (1–5):</label>
+                <input type="range" 
+                       name="avaliacao_mentor" 
+                       id="id_avaliacao_mentor" 
+                       value="{{ form.instance.avaliacao_mentor|default:1 }}" 
+                       min="1" max="5" step="1" 
+                       oninput="this.nextElementSibling.innerText = this.value">
+                <span>{{ form.instance.avaliacao_mentor|default:1 }}</span>
+            </p>
+
+            {# Avaliação do mentorando com slider #}
+            <p>
+                <label for="id_avaliacao_mentorando">Evaluation of the session by the mentee (1–5):</label>
+                <input type="range" 
+                       name="avaliacao_mentorando" 
+                       id="id_avaliacao_mentorando" 
+                       value="{{ form.instance.avaliacao_mentorando|default:1 }}" 
+                       min="1" max="5" step="1" 
+                       oninput="this.nextElementSibling.innerText = this.value">
+                <span>{{ form.instance.avaliacao_mentorando|default:1 }}</span>
+            </p>
         </div>
+
         <input type="submit" class="sessão" value="Save Session">
     </form>
 

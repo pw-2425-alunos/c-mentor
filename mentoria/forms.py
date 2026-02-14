@@ -106,14 +106,19 @@ class SessaoForm(ModelForm):
             'avaliacao_mentor': forms.NumberInput(
                 attrs={
                     'type': 'range',
-                    'min': '0',
+                    'min': '1',
                     'max': '5',
+                    'step': '1',
                     'id': 'id_avaliacao_mentor',
                     'style': 'padding:0',
+                    'oninput': 'this.nextElementSibling.value = this.value',  
                 }
             ),
             'avaliacao_mentorando': forms.HiddenInput(),
-            'data': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'data': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
             'sumario': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
             'confirmado': forms.HiddenInput(),
             'reportado': forms.HiddenInput(),
@@ -122,6 +127,12 @@ class SessaoForm(ModelForm):
             'observacoes': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
             'planificacao_proxima_sessao': forms.Textarea(attrs={'rows': '5','cols': '30','style':'width:100%;height:50px;'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            # Formata data para compatibilidade com datetime-local
+            self.fields['data'].initial = self.instance.data.strftime('%Y-%m-%dT%H:%M')
 
     def clean_data(self):
         data = self.cleaned_data.get('data')

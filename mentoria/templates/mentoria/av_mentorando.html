@@ -2,100 +2,167 @@
 
 {% block style %}
 
+/* --- Corpo e main --- */
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
 main {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
-    justify-contents: center;
+    padding: 40px 20px;
+    max-width: 600px;
 }
 
-div.disciplina  {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
+/* --- Caixa glass --- */
+div.disciplina {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    padding: 25px 20px;
+    margin: 20px 0;
     width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+div.disciplina:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+/* --- Cabeçalhos --- */
 h1 {
-    color: white;
-    }
-
-
-.disciplina input {
-    display:inline-block;
-    color: gray;
-    font-size: 0.85rem;
-    padding: 3px 5px;
-    border-radius: 5px;
-    color: black;
-    text-decoration: none;
-    }
-
-a.sessão {
-    display:inline-block;
-    color: black;
-    font-size: 0.85rem;
-    padding: 2px 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    background: white;
-    border: 1px solid black;
-    text-decoration: none;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-
-td.turma span:nth-child(2) {
-    display:none;
+h3 {
+    margin-bottom: 20px;
 }
 
-body {
+/* --- Range slider --- */
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-margin: 0;
+.range-label-left, .range-label-right {
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-width: 60px;
+    text-align: center;
+}
 
-width: 100%;
-height: 100%;
-background-size: cover;
-background-position: center center;
-background-repeat: no-repeat;
-background-attachment: fixed;
-background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.3);
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ff7300;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+input[type=range]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ff7300;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+/* --- Botão salvar --- */
+button {
+    background-color: #ff7300;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: black;
+    color: #ff7300;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
+}
+
+/* --- Botão voltar --- */
+a.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 40px;
+    text-decoration: none;
+    color: black;
+    background-color: #ff7300;
+    transition: all 0.3s ease;
+}
+
+a.back-btn:hover {
+    background-color: black;
+    color: #ff7300;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,115,0,0.5);
 }
 
 {% endblock style %}
 
-
-
-
-
 {% block main %}
 
-<body style="background-color: #b5073d;">
+<main>
 
-    <h1 style="text-align: center;">
-        Session {{ sessao.diade.mentor.disciplina }}
-        </h1>
+<h1>Session Evaluation</h1>
+<h3>Mentorship of {{ sessao.diade.mentor.disciplina }}</h3>
 
-
-    <div class="disciplina"
-        style="background-color: whitesmoke;
-            ; border: 1px solid black;
-            "
-    >
-    <h3>Please evaluate the session</h3>
+<div class="disciplina">
     <form method="post">
         {% csrf_token %}
 
-        <input type="number" id="id_avaliacao_mentorando" name="avaliacao_mentorando" min="1" max="5" required>
+        <div class="range-container">
+            <span class="range-label-left">Poor</span>
+            <input type="range" id="id_avaliacao_mentorando" name="avaliacao_mentorando" min="1" max="5" value="3" required>
+            <span class="range-label-right">Excellent</span>
+        </div>
 
-        <button type="submit">Save</button>
+        <button type="submit">Save Evaluation</button>
     </form>
-    </div>
+</div>
 
+<a class="back-btn" href="{% url 'sessoes' sessao.diade.mentor.id sessao.diade.mentorando.id 0 %}">&larr; Back to Sessions</a>
 
-
-</body>
-
-
+</main>
 
 {% endblock main %}
