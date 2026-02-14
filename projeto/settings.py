@@ -185,7 +185,7 @@ else:
         }
     }
     
-    MEDIA_ROOT = BASE_DIR / 'mediafiles'
+    MEDIA_ROOT = BASE_DIR / 'media'
     MEDIA_URL = '/media/'
     
     STATIC_ROOT = BASE_DIR / 'staticfiles'

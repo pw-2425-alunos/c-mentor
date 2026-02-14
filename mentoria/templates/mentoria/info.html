@@ -2,77 +2,73 @@
 
 {% block style %}
 
-body {
-    margin: 0;
-    width: 100%;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                      url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+/* =========================
+   GLOBAL
+========================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-/* HERO SHARED STYLES */
-.hero, .info-hero {
-    display: flex;
-    
-    align-items: center;
-    text-align: center;
-    color: white;
-    flex-direction: column;
-    padding: 40px 20px;
-}
-
-.hero {
-    min-height: calc(100vh - 200px); 
-    position: relative;
-}
 html {
     scroll-behavior: smooth;
 }
 
-.scroll-down {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2.2rem;
-    color: #ff7300;
-    animation: bounce 2s infinite;
-    cursor: pointer;
-    text-decoration: none;
+body {
+    margin: 0;
+    width: 100%;
+    color: white;
+    background:
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg)
+        center / cover no-repeat fixed;
 }
 
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-    40% { transform: translate(-50%, -10px); }
-    60% { transform: translate(-50%, -5px); }
+/* =========================
+   HERO SECTIONS
+========================= */
+
+.hero,
+.info-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero {
+    min-height: calc(100vh - 200px);
+    position: relative;
 }
 
 .hero-content {
     max-width: 900px;
 }
 
-.hero h1, .info-hero h1,
-.hero .tagline, .info-hero .tagline,
-.hero h2, .info-hero h2,
-.hero .buttons, .info-hero .buttons,
+/* =========================
+   TYPOGRAPHY
+========================= */
+
+.hero h1,
+.info-hero h1,
+.hero .tagline,
+.info-hero .tagline,
+.hero h2,
+.info-hero h2,
+.hero .buttons,
+.info-hero .buttons,
 .info-hero ol {
     opacity: 0;
     animation: slideUp 1s ease forwards;
 }
 
-/* Delays para animação escalonada */
-.hero h1 { animation-delay: 0.3s; }
-.hero .tagline { animation-delay: 0.6s; }
-.hero .buttons { animation-delay: 0.9s; }
-.hero h2 { animation-delay: 1.2s; }
-
-.info-hero h1 { animation-delay: 0.3s; }
-.info-hero .tagline { animation-delay: 0.6s; }
-.info-hero .buttons { animation-delay: 0.9s; }
-.info-hero h2 { animation-delay: 1.2s; }
+.hero h1, .info-hero h1 { animation-delay: 0.3s; }
+.hero .tagline, .info-hero .tagline { animation-delay: 0.6s; }
+.hero .buttons, .info-hero .buttons { animation-delay: 0.9s; }
+.hero h2, .info-hero h2 { animation-delay: 1.2s; }
 .info-hero ol { animation-delay: 1.5s; }
 
 .hero h1 {
@@ -80,18 +76,23 @@ html {
     margin-bottom: 0.3em;
 }
 
-.hero .tagline, .info-hero .tagline {
+.hero h2,
+.info-hero h2 {
+    font-size: 2.2em;
+    margin-bottom: 40px;
+}
+
+.tagline {
     font-size: 1.4em;
     font-weight: 300;
     margin-bottom: 50px;
 }
 
-.hero h2, .info-hero h2 {
-    font-size: 2.2em;
-    margin-bottom: 40px;
-}
+/* =========================
+   BUTTONS
+========================= */
 
-.buttons, .info-hero .buttons {
+.buttons {
     display: flex;
     justify-content: center;
     gap: 30px;
@@ -105,11 +106,10 @@ html {
     font-weight: bold;
     text-decoration: none;
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .btn-primary {
-    background-color: #ff7300;
+    background: #ff7300;
     color: black;
 }
 
@@ -118,34 +118,110 @@ html {
     color: #ff7300;
 }
 
-.btn-primary:hover {
+.btn-hero:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(255,115,0,0.5);
 }
 
-.btn-outline:hover {
-    background-color: #ff7300;
-    color: black;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255,115,0,0.5);
+/* =========================
+   SCROLL INDICATOR
+========================= */
+
+.scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.2rem;
+    color: #ff7300;
+    animation: bounce 2s infinite;
+    text-decoration: none;
 }
 
-.info-hero ol {
-    text-align: left;
-    max-width: 700px;
-    margin: 30px auto 0 auto;
-    font-size: 1.1em;
-    line-height: 1.6em;
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+    40% { transform: translate(-50%, -10px); }
+    60% { transform: translate(-50%, -5px); }
 }
 
-.info-hero ol li {
-    margin-bottom: 12px;
-}
-
-/* Keyframes */
 @keyframes slideUp {
     from { transform: translateY(40px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+/* =========================
+   CARD SYSTEM
+========================= */
+
+.card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 36px;
+    padding: 32px;
+    border-radius: 24px;
+    border: 1.5px solid #ff7300;
+    background: rgba(30, 30, 30, 0.92);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    text-align: left;
+}
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.how-it-works-block {
+    background: rgba(66, 65, 65, 0.75);
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 16px;
+}
+
+.how-it-works-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.how-it-works-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-right: 14px;
+    border-radius: 50%;
+    font-weight: bold;
+    background: #ff7300;
+    color: #222;
+}
+
+/* =========================
+   VIDEO CARD
+========================= */
+
+.video-card video {
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    background: #222;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+    .card {
+        padding: 18px;
+    }
 }
 
 {% endblock style %}
@@ -157,55 +233,82 @@ html {
 <section class="hero">
     <div class="hero-content">
         <h1><span style="white-space: nowrap;">C-Mentor</span> Network</h1>
-        <p class="tagline" style="margin-bottom: 20px;"><a href="https://www.c-accelerateplus.eu/" style="text-decoration: none; color:white; font-weight: bold;" target="_blank"><strong>C-Accelerate Plus</strong></a> is a flagship initiative designed to empower students with innovation, entrepreneurship, and industry-ready skills. </p>
-        <p class="tagline"> <strong>C-Mentor Network app</strong> is a dedicated platform connecting students with experienced mentors to guide them through innovation, entrepreneurship, and career growth.</p>
 
-        
+        <p class="tagline" style="margin-bottom: 20px;">
+            <a href="https://www.c-accelerateplus.eu/" target="_blank"
+               style="text-decoration: none; color:white; font-weight: bold;">
+                C-Accelerate Plus
+            </a>
+            is a flagship initiative designed to empower students with innovation,
+            entrepreneurship, and industry-ready skills.
+        </p>
+
+        <p class="tagline">
+            <strong>C-Mentor Network app</strong> connects students with experienced mentors
+            for innovation, entrepreneurship, and career growth.
+        </p>
+
         <div class="buttons">
             {% if request.user.is_authenticated %}
-        <a href="{% url 'mentores' %}" class="btn-hero btn-primary">My Mentees</a>
-        <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">My Mentors</a>
-    {% else %}
-        <a href="{% url 'mentores' %}" class="btn-hero btn-primary">Join as Mentor</a>
-        <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">Join as Mentee</a>
-    {% endif %}
+                <a href="{% url 'mentores' %}" class="btn-hero btn-primary">My Mentees</a>
+                <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">My Mentors</a>
+            {% else %}
+                <a href="{% url 'mentores' %}" class="btn-hero btn-primary">Join as Mentor</a>
+                <a href="{% url 'mentorandos' %}" class="btn-hero btn-outline">Join as Mentee</a>
+            {% endif %}
         </div>
     </div>
+
     <a href="#about" class="scroll-down">
-    <span style="font-size: 0.8rem; display:block;">Explore more</span>
-    ↓
-</a>
+        <span style="font-size: 0.8rem; display:block;">Explore more</span>
+        ↓
+    </a>
 </section>
 
 
 <!-- INFO SECTION -->
-<section class="info-hero"  id="about">
-    <div class="hero-content">
-        <h1>About the Program</h1>
-        <p class="tagline" style="font-size: 1.1em;">
-            With C-Mentor Network, more experienced students (<strong>mentors</strong>) support other students (<strong>mentees</strong>)
-            to improve academic performance and autonomy, while promoting personal and social development.
-       </p>
-       <div style="background: rgba(66, 65, 65, 0.75); padding: 20px; border-radius: 20px; margin-top: 30px;">
-        <p class="tagline" style="font-size: 1.3em; font-weight:bold; margin-bottom:0; padding-bottom:0;">Getting started</p>
-        <ol  class="tagline" style="font-size: 1em;">
-            <li>The app is to be used by students registered by the university C-Mentor Network programme.</li>
-            <li>Students register as mentors and/or mentees, specifying the subjects.</li>
-            <li>Mentors select available mentees, creating mentor–mentee pairs.</li>
-            <li>The mentor contacts the mentee to schedule a session.</li>
-            <li>After each session, the mentor records the session in the application.</li>
-            <li>Once recorded, the mentee confirms and provides feedback.</li>
-        </ol>
-       </div>
-        
+<section class="info-hero" id="about">
+
+    <div class="card">
+        <h1 style="color:#ff7300; margin-bottom:0.5em;">What is C-Mentor?</h1>
+
+        <p class="tagline" style="font-size: 1.15em; margin-bottom:1.5em;">
+            <strong>C-Mentor Network</strong> is a university-driven initiative where experienced students
+            (<strong>mentors</strong>) support their peers (<strong>mentees</strong>)
+            to boost academic performance, autonomy, and personal growth.
+        </p>
+
+        <div class="how-it-works-block">
+            <h2 style="font-size:1.25em; color:#fff; margin-bottom:0.7em;">How does it work?</h2>
+            <ol class="how-it-works-list">
+                <li><span class="step-number">1</span> Register as a mentor or mentee.</li>
+                <li><span class="step-number">2</span> Specify your subjects and interests.</li>
+                <li><span class="step-number">3</span> Mentors select mentees.</li>
+                <li><span class="step-number">4</span> Schedule sessions.</li>
+                <li><span class="step-number">5</span> Mentors record sessions.</li>
+                <li><span class="step-number">6</span> Mentees confirm and give feedback.</li>
+            </ol>
+        </div>
     </div>
+
+    <div class="card video-card">
+        <h2 style="margin:0; font-size:1.5em; color:#ff7300;">See C-Mentor in Action</h2>
+        <p style="margin:0.5em 0 1em 0; font-size:1.1em; font-weight:300;">
+            Quick platform demonstration
+        </p>
+
+        <video autoplay muted playsinline preload="metadata"
+               poster="/static/app/mentoria.png">
+            <source src="/media/app/c-mentor-demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
 </section>
 
 <div style="width:100%; display:flex; justify-content:center; margin:40px 0;">
     <a href="https://www.c-accelerateplus.eu/" target="_blank">
-        <img src="/static/app/toolkit.png" 
-             alt="toolkit" 
-             style="max-width:500px;">
+        <img src="/static/app/toolkit.png" alt="toolkit" style="max-width:500px;">
     </a>
 </div>
 
