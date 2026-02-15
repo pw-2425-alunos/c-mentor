@@ -87,7 +87,8 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 <body style="background-color: #b5073d;">
 
 
-{% if user.is_superuser %}
+{% load custom_filters %}
+{% if user|in_group:"Gestores" %}
 <h2>Lista de Sessões</h2>
 {% else %}
 <h2>Sessões de {{ request.user.first_name }}</h2>
@@ -95,11 +96,14 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
 
 <p style="padding:10px; border-radius:10px; background:white; text-align: center;">O atributo <b>reportado</b> indica se a sessão foi reportada para desconto nas propinas.</p>
 
-    {% if user.is_superuser and filtro == 'n' %}
+    {% load custom_filters %}
+
+    {% if user|in_group:"Gestores" and filtro == 'n' %}
         <a class="sessão" href="{% url 'report_sessaoR' %}" style="float: right; margin-right: 10px; padding:10px; border-radius:10px; background: #f9ed69;">
             Mostrar sessões por reportar
         </a>
-    {% elif user.is_superuser and filtro == 'r' %}
+        
+    {% elif user|in_group:"Gestores" and filtro == 'r' %}
         <a class="sessão" href="{% url 'all_sessoes' %}" style="float: right; margin-right: 10px; padding:10px; border-radius:10px;  background: #f9ed69;">
             Mostrar todas as sessões
         </a>
@@ -115,7 +119,8 @@ url(/static/app/licenciatura-engenharia-informatica-lisboa_600.jpg);
         <table style="width: 100%; text-align: center;border-collapse: collapse;" align="center" border="2px solid black">
             <thead>
                 <tr>
-                    {% if user.is_superuser %}
+                    {% load custom_filters %}
+                    {% if user|in_group:"Gestores" %}
                     <th colspan="5"><a href="{% url 'vermais' sessao.id %}">Sessão de {{sessao.diade.mentor.disciplina}}</a></th>
                     {% else %}
                     <th colspan="4">Sessão de {{sessao.diade.mentor.disciplina}}</th>

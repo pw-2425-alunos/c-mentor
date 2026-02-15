@@ -117,11 +117,12 @@ a.sessão:hover {
 
 <h2>List of Sessions</h2>
 
-<p style="padding:10px; border-radius:10px; background:white; color:black; text-align:center;">
-    Note: <b>Reported</b> attribute indicates if the session was reported by the secretariat for tuition fee discount.
+<p style="margin-top:-10px;  text-align:center;">
+    Note: ‘Reported’ shows if the session was submitted for tuition fee discount.
 </p>
 
-{% if user.is_superuser %}
+{% load custom_filters %}
+{% if user|in_group:"Gestores" %}
     {% if filtro == 'n' %}
         <a class="sessão" href="{% url 'por_reportar' %}" style="align-self:flex-end; margin:10px 0;">
             Show sessions not yet reported
@@ -141,6 +142,12 @@ a.sessão:hover {
     {{ mentor_info.total_sessoes_nao_reportadas }} {% if mentor_info.total_sessoes_nao_reportadas == 1 %}sessão{% else %}sessões{% endif %} por reportar
 </p>
 
+{% load custom_filters %}
+    {% if user|in_group:"Gestores" %}
+        <a class="sessão" href="{% url 'report_sessoes_mentor' mentor_info.mentor.id %}" style="align-self:flex-end; margin-top:10px;">
+            Report Sessions
+        </a>
+    {% endif %}
 <div class="disciplina">
     <table>
         <thead>
@@ -184,12 +191,7 @@ a.sessão:hover {
             {% endfor %}
         </tbody>
     </table>
-
-    {% if user.is_superuser %}
-        <a class="sessão" href="{% url 'report_sessoes_mentor' mentor_info.mentor.id %}" style="align-self:flex-end; margin-top:10px;">
-            Report Sessions
-        </a>
-    {% endif %}
+    
 </div>
 
 {% endfor %}
