@@ -263,7 +263,10 @@
 					</div>
 				</div>
 
-				
+				{% else %}
+					<a href="{% url 'horarios:login' %}" role="menuitem" tabindex="0" style="margin-top:0;">Log in
+						<i class="fa fa-sign-in"></i>
+					</a>
 				{% endif %}
 			{% endblock %}
         </nav>
